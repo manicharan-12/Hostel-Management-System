@@ -12,7 +12,7 @@ let db=null;
 app.use(cors())
 app.use(express.json());
 
-const intializeDbndServer = async()=>{
+const initializeDbAndServer = async()=>{
     try{
         db=await open({
             filename:dbPath,
@@ -34,7 +34,7 @@ const intializeDbndServer = async()=>{
     }
 }
 
-intializeDbndServer();
+initializeDbAndServer();
 
 
 const authenticateToken = (request,response,next)=>{
