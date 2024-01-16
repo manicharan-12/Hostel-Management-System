@@ -1,0 +1,9 @@
+POST http://localhost:8000/login/main-admin/
+Content-Type: application/json
+
+{
+    "email":"admin1@anurag.edu.i",
+    "password":"admin"
+}
+
+###
