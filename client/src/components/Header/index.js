@@ -1,21 +1,21 @@
 import Popup from 'reactjs-popup';
-import { withRouter } from 'react-router-dom';
+import { withRouter,Link } from 'react-router-dom';
 import logo from '../Images/logo.png'
 import './index.css'
 import Cookies from 'js-cookie'
 const Header = props =>{
 
     const onClickLogout = () => {
-      const {history}=this.props
+      const {history}=props
         Cookies.remove('jwt_token')
         history.replace('/')
       }
       return(
     <nav className="header-container" >
     {console.log(props)}
-        <div className="logo-container">
+        <Link to="/" className="logo-container">
         <img src={logo} alt="logo" className='logo'/>
-        </div>
+        </Link>
         <div className="logout-container">
         <Popup
             trigger={<button className="button logout-button"> LogOut </button>}
