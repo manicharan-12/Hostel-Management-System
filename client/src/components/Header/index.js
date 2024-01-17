@@ -12,7 +12,6 @@ const Header = props =>{
       }
       return(
     <nav className="header-container" >
-    {console.log(props)}
         <Link to="/" className="logo-container">
         <img src={logo} alt="logo" className='logo'/>
         </Link>
