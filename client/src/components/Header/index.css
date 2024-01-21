@@ -92,3 +92,13 @@
     cursor: pointer;
     outline: none;
   }
+
+
+@media screen and (max-width:767px){
+  .logout-button{
+    width: 60px;
+    font-size: 8px;
+    margin-top: 8px;
+    padding: 8px;
+  }
+}

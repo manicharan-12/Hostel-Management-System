@@ -2,8 +2,79 @@ POST http://localhost:8000/login/main-admin/
 Content-Type: application/json
 
 {
-    "email":"admin1@anurag.edu.i",
-    "password":"admin"
+    "email":"admin1@anurag.edu.in",
+    "password":"admin1"
 }
 
 ###
+POST http://localhost:8000/boys/floor-data/add/floor
+Content-Type: application/json
+
+{
+    "floorNo":1,
+    "numberOfRooms":50
+}
+
+###
+GET http://localhost:8000/boys/floor-data
+
+
+###
+DELETE  http://localhost:8000/boys/floor-data/delete/26406d35-4254-496a-b0ea-50abde0b738a
+
+// Get the id from the "GET http://localhost:8000/boys/floor-data" request
+
+###
+POST http://localhost:8000/girls/floor-data/add/floor
+Content-Type: application/json
+
+{
+    "floorNo":1,
+    "numberOfRooms":50
+}
+
+###
+GET http://localhost:8000/girls/floor-data
+
+
+###
+DELETE  http://localhost:8000/girls/floor-data/delete/5658f930-6a99-40b8-85c8-ac79a75b7cae
+
+// Get the id from the "GET http://localhost:8000/girls/floor-data" request
+
+
+###
+Post http://localhost:8000/boys/room-data/add/room
+Content-Type: application/json
+
+{
+    "roomNo":101,
+    "floorNo":1,
+    "totalStudents":4,
+    "roomType":"non-ac",
+    "washroomType":"attached"
+}
+
+###
+GET http://localhost:8000/boys/room-data
+
+###
+DELETE http://localhost:8000/boys/room-data/delete/d633dfc0-4b4c-4591-bdee-e0ac346ec49e
+
+###
+Post http://localhost:8000/girls/room-data/add/room
+Content-Type: application/json
+
+{
+    "roomNo":101,
+    "floorNo":1,
+    "totalStudents":4,
+    "roomType":"non-ac",
+    "washroomType":"attached"
+}
+
+###
+GET http://localhost:8000/girls/room-data
+
+###
+DELETE http://localhost:8000/girls/room-data/delete/80cdc8ed-6fa9-4831-87d4-95e21750bef7
