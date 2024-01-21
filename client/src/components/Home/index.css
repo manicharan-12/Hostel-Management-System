@@ -1,88 +1,87 @@
-
-*{
-    margin: 0px;
+* {
+  margin: 0px;
 }
-.container1{
+.container1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-image: linear-gradient(360deg, #274d56 50%, #273656 50%);
+  border-radius: 0px;
+  overflow-x: hidden;
+  padding: 0px;
+}
+
+.hostel-type-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.hostel-images {
+  width: 100%;
+}
+
+.image-container-hostel {
+  width: 20%;
+}
+
+.boys,
+.girls {
+  height: 300px;
+  width: 300px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 24px;
+  transition: 1s ease;
+}
+
+.boys:hover,
+.girls:hover {
+  transform: scale(1.1);
+  transition: 1s ease;
+}
+
+.boys {
+  background-color: aqua;
+}
+.girls {
+  background-color: pink;
+}
+
+.hostel-type {
+  color: #000;
+}
+
+.home-heading {
+  color: #fff;
+  margin-bottom: 22px;
+}
+
+@media screen and (max-width: 767px) {
+  .container1 {
+    background-image: linear-gradient(90deg, #274d56 50%, #273656 50%);
+  }
+  .hostel-type-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100Vh;
-    width: 100%;
-    background-image: linear-gradient(360deg, #274D56 50%, #273656 50%);
-    border-radius: 0px;
-    overflow-x: hidden;
-    padding: 0px;
-}
-
-.hostel-type-container{
-    display: flex;
-    flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    width: 100%;
-}
-
-.hostel-images{
-    width: 100%;
-}
-
-.image-container-hostel{
-    width: 20%;
-}
-
-.boys,.girls{
-    height: 300px;
-    width: 300px;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 24px;
-    transition: 1s ease;
-}
-
-.boys:hover,.girls:hover{
-    transform: scale(1.1);
-    transition: 1s ease;
-}
-
-
-.boys{
-    background-color: aqua;
-}
-.girls{
-    background-color: pink;
-}
-
-.hostel-type{
-    color: #000;
-}
-
-.home-heading{
-    color: #fff;
-    margin-bottom: 22px;
-}
-
-@media screen and (max-width:767px){
-    .container1{
-        
-        background-image: linear-gradient(90deg, #274D56 50%, #273656 50%);
-    }
-    .hostel-type-container{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-    }
-    .boys{
-        margin-bottom: 8px;
-    }
-    .girls{
-        margin-top: 8px;
-    }
-    .image-container-hostel{
-        width: 30%;
-    }
+  }
+  .boys {
+    margin-bottom: 8px;
+  }
+  .girls {
+    margin-top: 8px;
+  }
+  .image-container-hostel {
+    width: 30%;
+  }
 }
