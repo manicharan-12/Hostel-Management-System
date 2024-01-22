@@ -16,9 +16,19 @@
   border-radius: 24px;
   width: 80%;
   padding: 12px;
+  box-sizing: border-box;
 }
+
 .image-container {
   width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
 }
 
 .foam-container {
@@ -91,5 +101,29 @@
   }
   .main-heading {
     text-align: center;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    width: 90%;
+  }
+  .image-container,
+  .input-container,
+  .button-container,
+  .error-msg {
+    width: 95%;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .container {
+    width: 80%;
+  }
+  .image-container,
+  .input-container,
+  .button-container,
+  .error-msg {
+    width: 80%;
   }
 }

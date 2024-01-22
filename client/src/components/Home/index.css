@@ -1,6 +1,8 @@
 * {
   margin: 0px;
+  box-sizing: border-box;
 }
+
 .container1 {
   display: flex;
   flex-direction: column;
@@ -20,20 +22,25 @@
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .hostel-images {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .image-container-hostel {
-  width: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .boys,
 .girls {
-  height: 300px;
-  width: 300px;
+  width: 250px;
+  height: 250px;
   text-decoration: none;
   display: flex;
   flex-direction: column;
@@ -70,10 +77,12 @@
     background-image: linear-gradient(90deg, #274d56 50%, #273656 50%);
   }
   .hostel-type-container {
-    display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+  }
+  .boys,
+  .girls {
+    width: 60%;
+    height: 60vw;
   }
   .boys {
     margin-bottom: 8px;
@@ -82,6 +91,28 @@
     margin-top: 8px;
   }
   .image-container-hostel {
-    width: 30%;
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .boys,
+  .girls {
+    width: 40%;
+    height: 40vw;
+  }
+  .image-container-hostel {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .boys,
+  .girls {
+    width: 250px;
+    height: 250px;
+  }
+  .image-container-hostel {
+    width: 200px;
   }
 }
