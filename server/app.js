@@ -76,19 +76,19 @@ app.post("/login/main-admin/", async (request, response) => {
   }
 });
 
-app.post("floor-data/add/floor/:hostelType", async (request, response) => {
+app.post("/floor-data/add/floor/:hostelType", async (request, response) => {
+  const { hostelType } = request.params;
   const { floorNo, numberOfRooms } = request.body;
-  const checkFloorQuery = `select * from floor where floor_no=${floorNo}`;
+  const checkFloorQuery = `select * from floor where floor_no=${floorNo} and hostel_type='${hostelType}'`;
   const dbFloorExist = await db.get(checkFloorQuery);
   if (dbFloorExist === undefined) {
     const total_students = 0,
       present_students = 0,
       available_students = 0,
-      id = uuidv4(),
-      hostel_type = "boys";
+      id = uuidv4();
     const addFloorQuery = `insert into floor 
         (id,floor_no,no_of_rooms,total_students,present_students,available_students,hostel_type)
-        values ('${id}',${floorNo},${numberOfRooms},${total_students},${present_students},${available_students},'${hostel_type}');`;
+        values ('${id}',${floorNo},${numberOfRooms},${total_students},${present_students},${available_students},'${hostelType}');`;
     await db.run(addFloorQuery);
     response.send("Success");
   } else {
@@ -98,28 +98,31 @@ app.post("floor-data/add/floor/:hostelType", async (request, response) => {
 });
 
 app.get("/floor-data/:hostelType", async (request, response) => {
-  const hostelType=request.params
-  console.log(hostelType)
-  const getFloorQuery = `select * from floor where hostel_type='boys';`;
+  const { hostelType } = request.params;
+  const getFloorQuery = `select * from floor where hostel_type='${hostelType}';`;
   const floorDetails = await db.all(getFloorQuery);
-  response.send(floorDetails);
+  response.send({ floorDetails });
 });
 
-app.delete("floor-data/delete/:hostelType/:deleteId", async (request, response) => {
-  const { deleteId } = request.params;
-  const deleteFloorQuery = `delete from floor where id='${deleteId}'`;
-  await db.run(deleteFloorQuery);
-  response.send("Success");
-});
+app.delete(
+  "/floor-data/delete/:hostelType/:deleteId",
+  async (request, response) => {
+    const { hostelType, deleteId } = request.params;
+    const deleteFloorQuery = `delete from floor where id='${deleteId}' and hostel_type='${hostelType}'`;
+    await db.run(deleteFloorQuery);
+    response.send("Success");
+  },
+);
 
-app.post("room-data/add/room/:hostelType", async (request, response) => {
+app.post("/room-data/add/room/:hostelType", async (request, response) => {
+  const { hostelType } = request.params;
   const { roomNo, floorNo, totalStudents, roomType, washroomType } =
     request.body;
-  const checkRoomNo = `select * from room where room_no=${roomNo} and floor_no=${floorNo} and hostel_type='boys'`;
+  const checkRoomNo = `select * from room where room_no=${roomNo} and floor_no=${floorNo} and hostel_type='${hostelType}'`;
   const dbExistRoom = await db.get(checkRoomNo);
   if (dbExistRoom === undefined) {
     const getFloorIdQuery = await db.get(
-      `select id from floor where floor_no=${floorNo} and hostel_type='boys'`,
+      `select id from floor where floor_no=${floorNo} and hostel_type='${hostelType}'`,
     );
     if (getFloorIdQuery === undefined) {
       response.status(400);
@@ -130,9 +133,8 @@ app.post("room-data/add/room/:hostelType", async (request, response) => {
       const floor_id = getFloorIdQuery.id;
       const present_students = 0,
         available_students = 0,
-        id = uuidv4(),
-        hostel_type = "boys";
-      const createRoomQuery = `insert into room (id,room_no,floor_no,hostel_type,total_students,present_students,available_students,room_type,washroom_type,floor_id) values('${id}',${roomNo},${floorNo},'${hostel_type}',${totalStudents},${present_students},${available_students},'${roomType}','${washroomType}','${floor_id}');`;
+        id = uuidv4();
+      const createRoomQuery = `insert into room (id,room_no,floor_no,hostel_type,total_students,present_students,available_students,room_type,washroom_type,floor_id) values('${id}',${roomNo},${floorNo},'${hostelType}',${totalStudents},${present_students},${available_students},'${roomType}','${washroomType}','${floor_id}');`;
       await db.run(createRoomQuery);
       response.send("Success");
     }
@@ -142,15 +144,19 @@ app.post("room-data/add/room/:hostelType", async (request, response) => {
   }
 });
 
-app.get("room-data/:hostelType", async (request, response) => {
-  const getRoomDetailQuery = `select * from room where hostel_type='boys';`;
+app.get("/room-data/:hostelType", async (request, response) => {
+  const { hostelType } = request.params;
+  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}';`;
   const getDetails = await db.all(getRoomDetailQuery);
   response.send(getDetails);
 });
 
-app.delete("room-data/delete/:hostelType/:roomId", async (request, response) => {
-  const { roomId } = request.params;
-  const deleteRoomQuery = `delete from room where id='${roomId}';`;
-  await db.run(deleteRoomQuery);
-  response.send("Successfully Deleted");
-});
+app.delete(
+  "/room-data/delete/:hostelType/:roomId",
+  async (request, response) => {
+    const { hostelType, roomId } = request.params;
+    const deleteRoomQuery = `delete from room where id='${roomId}' and hostel_type='${hostelType}';`;
+    await db.run(deleteRoomQuery);
+    response.send("Successfully Deleted");
+  },
+);

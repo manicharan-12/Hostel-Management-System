@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8000/floor-data/add/floor/:hostelType
+POST http://localhost:8000/floor-data/add/floor/boys
 Content-Type: application/json
 
 {
@@ -16,16 +16,16 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/floor-data/:hostelType
+GET http://localhost:8000/floor-data/boys
 
 
 ###
-DELETE  http://localhost:8000/boys/floor-data/delete/26406d35-4254-496a-b0ea-50abde0b738a
+DELETE  http://localhost:8000/floor-data/delete/boys/352c1406-48af-4ccf-b6e9-48920f466fc7
 
 // Get the id from the "GET http://localhost:8000/boys/floor-data" request
 
 ###
-POST http://localhost:8000/girls/floor-data/add/floor
+POST http://localhost:8000/floor-data/add/floor/girls
 Content-Type: application/json
 
 {
@@ -34,17 +34,17 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/girls/floor-data
+GET http://localhost:8000/floor-data/girls
 
 
 ###
-DELETE  http://localhost:8000/girls/floor-data/delete/5658f930-6a99-40b8-85c8-ac79a75b7cae
+DELETE  http://localhost:8000/floor-data/delete/girls/9b45123f-4980-4d60-bba1-7bb3511a61c2
 
 // Get the id from the "GET http://localhost:8000/girls/floor-data" request
 
 
 ###
-Post http://localhost:8000/boys/room-data/add/room
+Post http://localhost:8000/room-data/add/room/boys
 Content-Type: application/json
 
 {
@@ -56,13 +56,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/boys/room-data
+GET http://localhost:8000/room-data/boys
 
 ###
-DELETE http://localhost:8000/boys/room-data/delete/d633dfc0-4b4c-4591-bdee-e0ac346ec49e
+DELETE http://localhost:8000/room-data/delete/boys/21f989d6-744f-476d-bae5-52ba3573c8d4
 
 ###
-Post http://localhost:8000/girls/room-data/add/room
+Post http://localhost:8000/room-data/add/room/girls
 Content-Type: application/json
 
 {
@@ -74,7 +74,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/girls/room-data
+GET http://localhost:8000/room-data/girls
 
 ###
-DELETE http://localhost:8000/girls/room-data/delete/80cdc8ed-6fa9-4831-87d4-95e21750bef7
+DELETE http://localhost:8000/room-data/delete/girls/80cdc8ed-6fa9-4831-87d4-95e21750bef7

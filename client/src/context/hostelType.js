@@ -1,8 +1,8 @@
-import React from "react"
+import React from "react";
 
 const HostelType = React.createContext({
-  hostelType: '',
-  setHostelType: () => {}
+  hostelType: "",
+  setHostelType: () => {},
 });
 
 export default HostelType;

@@ -1,14 +1,14 @@
-import Popup from 'reactjs-popup'
-import {withRouter, Link} from 'react-router-dom'
-import logo from '../Images/logo.png'
-import './index.css'
-import Cookies from 'js-cookie'
-const Header = props => {
+import Popup from "reactjs-popup";
+import { withRouter, Link } from "react-router-dom";
+import logo from "../Images/logo.png";
+import "./index.css";
+import Cookies from "js-cookie";
+const Header = (props) => {
   const onClickLogout = () => {
-    const {history} = props
-    Cookies.remove('jwt_token')
-    history.replace('/')
-  }
+    const { history } = props;
+    Cookies.remove("jwt_token");
+    history.replace("/");
+  };
   return (
     <nav className="header-container">
       <Link to="/" className="logo-container">
@@ -20,7 +20,7 @@ const Header = props => {
           modal
           nested
         >
-          {close => (
+          {(close) => (
             <div className="modal">
               <button className="close" onClick={close}>
                 &times;
@@ -31,7 +31,7 @@ const Header = props => {
                 <button
                   className="button modal-buttons"
                   onClick={() => {
-                    close()
+                    close();
                   }}
                 >
                   Cancel
@@ -45,7 +45,7 @@ const Header = props => {
         </Popup>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default withRouter(Header)
+export default withRouter(Header);

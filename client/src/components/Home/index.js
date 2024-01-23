@@ -1,25 +1,21 @@
-import {Link,withRouter} from 'react-router-dom'
-import Header from '../Header'
-import boy from '../Images/hostel boy.png'
-import girl from '../Images/hostel girl.png'
-import './index.css'
-import { Component } from 'react'
-import HostelType from '../../context/hostelType'
+import { Link, withRouter } from "react-router-dom";
+import Header from "../Header";
+import boy from "../Images/hostel boy.png";
+import girl from "../Images/hostel girl.png";
+import "./index.css";
+import { Component } from "react";
+import HostelType from "../../context/hostelType";
 
 class Home extends Component {
   static contextType = HostelType;
 
-  setBoys = (event) => {
-    event.preventDefault();
-    this.context.setHostelType('boys');
-    this.props.history.push('/boys');
-  }
+  setBoys = () => {
+    this.context.setHostelType("boys");
+  };
 
-  setGirls = (event) => {
-    event.preventDefault();
-    this.context.setHostelType('girls');
-    this.props.history.push('/girls');
-  }
+  setGirls = () => {
+    this.context.setHostelType("girls");
+  };
 
   render() {
     return (
@@ -43,7 +39,7 @@ class Home extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
