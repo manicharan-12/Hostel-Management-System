@@ -24,7 +24,13 @@ const HostelHome = () => {
                   <Link to="" className="box">
                     <h4 className="content">Add Student Data</h4>
                   </Link>
-                  <Link to="" className="box">
+                  <Link
+                    to={{
+                      pathname: `/room-data/${hostelType}`,
+                      state: { hostel_type: `${hostelType}` },
+                    }}
+                    className="box"
+                  >
                     <h4 className="content">Get Room details</h4>
                   </Link>
                   <Link to="" className="box">

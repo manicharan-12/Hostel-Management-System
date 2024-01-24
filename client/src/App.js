@@ -43,6 +43,7 @@ const App = () => {
           path="/floor-data/:hostelType"
           component={Floor}
         />
+
         <Redirect to="/" />
       </Switch>
     </HostelTypeProvider>
