@@ -11,8 +11,7 @@ POST http://localhost:8000/floor-data/add/floor/boys
 Content-Type: application/json
 
 {
-    "floorNo":1,
-    "numberOfRooms":50
+    "floorNo":1
 }
 
 ###
@@ -20,7 +19,7 @@ GET http://localhost:8000/floor-data/boys
 
 
 ###
-DELETE  http://localhost:8000/floor-data/delete/boys/352c1406-48af-4ccf-b6e9-48920f466fc7
+DELETE  http://localhost:8000/floor-data/delete/boys/dd6d9a6e-bbc9-44e6-94dd-2d10d910abce
 
 // Get the id from the "GET http://localhost:8000/boys/floor-data" request
 

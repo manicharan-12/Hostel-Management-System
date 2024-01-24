@@ -19,3 +19,138 @@
   width: 50px;
   height: 50px;
 }
+
+.floor-detail-container {
+  min-height: 100vh;
+  background-color: #d1d1d1;
+}
+
+.header-floor-container {
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.header-floor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.add-floor-button {
+  background-color: #4373e6;
+  border: none;
+  color: #fff;
+  padding: 3px;
+  border-radius: 8px;
+  width: 120px;
+  cursor: pointer;
+  outline: none;
+  line-height: 2;
+  font-size: 20px;
+}
+
+.floor-data-container {
+  padding: 32px;
+}
+.floor-data {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+table {
+  width: 100%;
+  background-color: #fff;
+  text-indent: initial;
+  border-spacing: 2px;
+  border-collapse: collapse;
+  text-indent: initial;
+  border-spacing: 2px;
+  border-radius: 12px;
+}
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+  line-height: 2;
+}
+th {
+  font-family: Montserrat-Medium;
+  font-size: 12px;
+  color: #fff;
+  line-height: 4;
+  text-transform: uppercase;
+  background-color: #002933;
+}
+
+td {
+  text-align: center;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #e9faff;
+}
+
+.failure-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.image-container-failure {
+  width: 80%;
+  text-align: center;
+}
+
+.button-container-floor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.no-data-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+
+.no-data-image {
+  text-align: center;
+  width: 100%;
+  max-width: 30vw;
+}
+
+.modal {
+  background-color: #fff;
+  border: none;
+}
+
+.floor-no-label {
+  color: #000;
+  margin-right: 5px;
+}
+
+.add-floor-submit-button {
+  background-color: #4373e6;
+  border: none;
+  color: #fff;
+  padding: 3px;
+  border-radius: 8px;
+  width: 80px;
+  cursor: pointer;
+  outline: none;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.error-msg-add-floor {
+  color: red;
+}

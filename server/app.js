@@ -78,19 +78,20 @@ app.post("/login/main-admin/", async (request, response) => {
 
 app.post("/floor-data/add/floor/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const { floorNo, numberOfRooms } = request.body;
+  const { floorNo } = request.body;
   const checkFloorQuery = `select * from floor where floor_no=${floorNo} and hostel_type='${hostelType}'`;
   const dbFloorExist = await db.get(checkFloorQuery);
   if (dbFloorExist === undefined) {
     const total_students = 0,
       present_students = 0,
       available_students = 0,
+      no_of_rooms = 0,
       id = uuidv4();
     const addFloorQuery = `insert into floor 
         (id,floor_no,no_of_rooms,total_students,present_students,available_students,hostel_type)
-        values ('${id}',${floorNo},${numberOfRooms},${total_students},${present_students},${available_students},'${hostelType}');`;
+        values ('${id}',${floorNo},${no_of_rooms},${total_students},${present_students},${available_students},'${hostelType}');`;
     await db.run(addFloorQuery);
-    response.send("Success");
+    response.send({ message: "Success" });
   } else {
     response.status(400);
     response.send({ error_msg: "Floor already exits" });
