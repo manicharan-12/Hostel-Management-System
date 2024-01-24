@@ -136,6 +136,9 @@
     font-size: 16px;
     padding: 12px;
   }
+  .logo {
+    width: 80%;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -144,5 +147,8 @@
     width: 110px;
     font-size: 18px;
     padding: 13px;
+  }
+  .logo {
+    width: 80%;
   }
 }

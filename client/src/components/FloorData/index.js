@@ -6,7 +6,6 @@ import FloorDetails from "../FloorDetails";
 import failure from "../Images/failure-image.png";
 import noData from "../Images/no data.png";
 import axios from "axios";
-import Popup from "reactjs-popup";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -23,6 +22,7 @@ class Floor extends Component {
     floorNo: null,
     errorStatus: false,
     errorMsg: "",
+    show: false,
   };
 
   componentDidMount() {
@@ -49,41 +49,6 @@ class Floor extends Component {
     }
   };
 
-  addFloor = async () => {
-    const { hostelType, floorNo } = this.state;
-    if (!floorNo) {
-      this.setState({
-        errorStatus: true,
-        errorMsg: "Floor number cannot be empty",
-      });
-      return;
-    }
-    //this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const api = `http://localhost:8000/floor-data/add/floor/${hostelType}`;
-    const postFloor = { floorNo };
-    const option = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postFloor),
-    };
-    const response = await fetch(api, option);
-
-    console.log(response);
-    if (response.ok !== true) {
-      const data = await response.json();
-      this.setState({ errorStatus: true, errorMsg: data.error_msg });
-    } else {
-      await this.setState({
-        apiStatus: apiStatusConstants.success,
-        errorStatus: false,
-        errorMsg: "",
-      });
-      this.getFloorDetails();
-    }
-  };
-
   onClickDeleteFloor = async (id) => {
     const { hostelType } = this.state;
     await axios.delete(
@@ -102,15 +67,11 @@ class Floor extends Component {
     );
   };
 
-  renderFloorNo = (event) => {
-    this.setState({ floorNo: event.target.value });
-  };
-
   renderSuccessView = () => {
-    const { floorDetails, errorMsg, errorStatus } = this.state;
+    const { floorDetails } = this.state;
     const length = floorDetails.length;
     return (
-      <div className="floor-detail-container">
+      <>
         {length > 0 ? (
           <div className="floor-data-container">
             <div className="header-floor">
@@ -137,113 +98,15 @@ class Floor extends Component {
                 ))}
               </tbody>
             </table>
-            <div className="button-container-floor">
-              <Popup
-                trigger={
-                  <button className="add-floor-button button">Add Floor</button>
-                }
-                modal
-                nested
-              >
-                {(close) => (
-                  <div className="modal">
-                    <button className="close" onClick={close}>
-                      &times;
-                    </button>
-                    <div className="form-container-modal">
-                      <form>
-                        <label htmlFor="floor-no" className="floor-no-label">
-                          Enter Floor No:
-                        </label>
-                        <input
-                          type="text"
-                          id="floor-no"
-                          onChange={this.renderFloorNo}
-                        />
-                      </form>
-                    </div>
-
-                    <div className="actions">
-                      <button
-                        className="button add-floor-submit-button"
-                        type="submit"
-                        onClick={async () => {
-                          await this.addFloor();
-                          if (!errorStatus) {
-                            close();
-                          } else {
-                            this.setState({
-                              errorStatus: true,
-                              errorMsg: errorMsg,
-                            });
-                          }
-                        }}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </Popup>
-            </div>
           </div>
         ) : (
           <div>
             <div className="no-data-container">
               <img src={noData} alt="noData" className="no-data-image" />
             </div>
-            <div className="button-container-floor">
-              <Popup
-                trigger={
-                  <button className="add-floor-button button">Add Floor</button>
-                }
-                modal
-                nested
-              >
-                {(close) => (
-                  <div className="modal">
-                    <button className="close" onClick={close}>
-                      &times;
-                    </button>
-                    <div className="form-container-modal">
-                      <form>
-                        <label htmlFor="floor-no" className="floor-no-label">
-                          Enter Floor No:
-                        </label>
-                        <input
-                          type="text"
-                          id="floor-no"
-                          onChange={this.renderFloorNo}
-                        />
-                      </form>
-                    </div>
-
-                    <div className="actions">
-                      <button
-                        className="button add-floor-submit-button"
-                        type="submit"
-                        onClick={async () => {
-                          await this.addFloor();
-                          if (!errorStatus) {
-                            close();
-                          } else {
-                            this.setState({
-                              errorStatus: true,
-                              errorMsg: errorMsg,
-                            });
-                          }
-                        }}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </Popup>
-            </div>
           </div>
         )}
-      </div>
+      </>
     );
   };
 
@@ -272,20 +135,114 @@ class Floor extends Component {
     }
   };
 
+  addFloor = async (event) => {
+    event.preventDefault();
+    const { hostelType, floorNo } = this.state;
+    if (!floorNo) {
+      this.setState({
+        errorStatus: true,
+        errorMsg: "Floor number cannot be empty",
+      });
+      return;
+    }
+    this.setState({ apiStatus: apiStatusConstants.inProgress });
+    const api = `http://localhost:8000/floor-data/add/floor/${hostelType}`;
+    const postFloor = { floorNo };
+    const option = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postFloor),
+    };
+    const response = await fetch(api, option);
+
+    console.log(response);
+    if (response.ok !== true) {
+      const data = await response.json();
+      this.setState({
+        errorStatus: true,
+        errorMsg: data.error_msg,
+        apiStatus: apiStatusConstants.success,
+      });
+    } else {
+      await this.setState({
+        apiStatus: apiStatusConstants.success,
+        errorStatus: false,
+        errorMsg: "",
+        show: false,
+      });
+      this.getFloorDetails();
+    }
+  };
+
   render() {
-    const { errorStatus, errorMsg } = this.state;
+    const { errorStatus, errorMsg, show, floorNo } = this.state;
+    console.log(floorNo);
     return (
-      <div>
+      <>
         <Header />
-        <div>{this.renderFloorData()}</div>
-        {errorStatus ? (
-          <div>
-            <p className="error-msg-add-floor">{errorMsg}</p>
+        <div className="floor-detail-container">
+          {this.renderFloorData()}
+          <div className="button-container-floor">
+            <button
+              className="add-floor-button button"
+              onClick={() => {
+                this.setState({ show: true });
+              }}
+            >
+              Add Floor
+            </button>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
+          {show ? (
+            <div className="form-container-floor">
+              <div className="form-container-">
+                <div className="close-button-container-floor">
+                  <button
+                    className="close-button-floor"
+                    onClick={() => {
+                      this.setState({
+                        show: false,
+                        errorStatus: false,
+                        errorMsg: "",
+                      });
+                    }}
+                  >
+                    &times;
+                  </button>
+                </div>
+                <form className="form-floor" onSubmit={this.addFloor}>
+                  <div className="input-container-floor">
+                    <label htmlFor="floor-no" className="floor-no-label">
+                      Enter Floor No:
+                    </label>
+                    <input
+                      className="input-floor"
+                      type="text"
+                      id="floor-no"
+                      onChange={(event) => {
+                        this.setState({ floorNo: event.target.value });
+                      }}
+                    />
+                  </div>
+                  <button type="submit" className="submit-button-floor">
+                    Submit
+                  </button>
+                </form>
+                {errorStatus ? (
+                  <div className="error-msg-container-floor">
+                    <p className="error-msg-add-floor">{errorMsg}</p>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      </>
     );
   }
 }

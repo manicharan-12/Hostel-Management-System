@@ -83,6 +83,7 @@ th {
   line-height: 4;
   text-transform: uppercase;
   background-color: #002933;
+  border: 1px solid #fff;
 }
 
 td {
@@ -128,17 +129,60 @@ tbody tr:nth-child(even) {
   max-width: 30vw;
 }
 
-.modal {
-  background-color: #fff;
-  border: none;
-}
-
 .floor-no-label {
   color: #000;
   margin-right: 5px;
 }
 
-.add-floor-submit-button {
+.error-msg-add-floor {
+  color: red;
+}
+
+.button-container-floor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container-floor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.form-container- {
+  width: fit-content;
+  background-color: #fff;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.form-floor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.input-container-floor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-floor {
+  width: 80%;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.submit-button-floor {
   background-color: #4373e6;
   border: none;
   color: #fff;
@@ -151,6 +195,21 @@ tbody tr:nth-child(even) {
   margin-top: 10px;
 }
 
-.error-msg-add-floor {
-  color: red;
+.error-msg-container-floor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.close-button-container-floor {
+  text-align: end;
+}
+.close-button-floor {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  outline: none;
 }
