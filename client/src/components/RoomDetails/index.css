@@ -1,0 +1,9 @@
+.room-view-button {
+  padding: 12px;
+  background: #4373e6;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+}

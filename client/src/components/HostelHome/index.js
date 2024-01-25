@@ -33,9 +33,6 @@ const HostelHome = () => {
                   >
                     <h4 className="content">Get Room details</h4>
                   </Link>
-                  <Link to="" className="box">
-                    <h4 className="content">Manage Rooms</h4>
-                  </Link>
                   <Link
                     to={{
                       pathname: `/floor-data/${hostelType}`,

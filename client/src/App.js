@@ -7,6 +7,8 @@ import Floor from "./components/FloorData";
 import HostelType from "./context/hostelType";
 import React from "react";
 import { Component } from "react";
+import Room from "./components/RoomData";
+import AddRoom from "./components/AddRoom";
 
 class HostelTypeProvider extends Component {
   state = {
@@ -43,7 +45,12 @@ const App = () => {
           path="/floor-data/:hostelType"
           component={Floor}
         />
-
+        <ProtectedRoute exact path="/room-data/:hostelType" component={Room} />
+        <ProtectedRoute
+          exact
+          path="/add-room/:hostelType"
+          component={AddRoom}
+        />
         <Redirect to="/" />
       </Switch>
     </HostelTypeProvider>

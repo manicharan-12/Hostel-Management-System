@@ -147,9 +147,9 @@ app.post("/room-data/add/room/:hostelType", async (request, response) => {
 
 app.get("/room-data/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}';`;
+  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}' order by room_no ;`;
   const getDetails = await db.all(getRoomDetailQuery);
-  response.send(getDetails);
+  response.send({roomData:getDetails});
 });
 
 app.delete(
