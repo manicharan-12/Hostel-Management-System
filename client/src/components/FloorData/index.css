@@ -200,7 +200,7 @@ tbody tr:nth-child(even) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
 .close-button-container-floor {

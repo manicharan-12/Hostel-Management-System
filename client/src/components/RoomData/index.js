@@ -37,7 +37,6 @@ class Room extends Component {
     const response = await fetch(api);
     const data = await response.json();
     const roomData = data.roomData;
-    console.log(roomData);
     if (response.status !== 200) {
       this.setState({ apiStatus: apiStatusConstants.failure });
     } else {
@@ -57,6 +56,7 @@ class Room extends Component {
     await axios.delete(
       `http://localhost:8000/room-data/delete/${hostelType}/${id}`,
     );
+    this.setState({ roomNo: "" });
     this.getRoomData();
   };
 
@@ -83,7 +83,6 @@ class Room extends Component {
   renderSuccessView = () => {
     const { roomData, roomNo, hostelType } = this.state;
     const length = roomData.length;
-    console.log(roomData);
     const newRoomData = roomData.filter((eachRoom) => {
       return eachRoom.room_no.toString().includes(roomNo.toString());
     });
@@ -94,7 +93,13 @@ class Room extends Component {
             <div className="header-floor">
               <h1>Rooms Data</h1>
               <div>
-                <Link to={`/add-room/${hostelType}`} className="link-add-room">
+                <Link
+                  to={{
+                    pathname: `/add-room/${hostelType}`,
+                    state: { hostel_type: `${hostelType}` },
+                  }}
+                  className="link-add-room"
+                >
                   <button className="room-view-button">Add Room</button>
                 </Link>
                 <input
@@ -110,11 +115,21 @@ class Room extends Component {
                 <li className="table-header">
                   <div className="col col-1">Floor No</div>
                   <div className="col col-2">Room No</div>
-                  <div className="col col-3">Present Students</div>
-                  <div className="col col-4">Available Students</div>
-                  <div className="col col-5">Total Students</div>
-                  <div className="col col-6">Room Type</div>
-                  <div className="col col-7">Washroom Type</div>
+                  <div className="col col-3">
+                    <p>Present</p> <p>Students</p>
+                  </div>
+                  <div className="col col-4">
+                    <p>Available</p> <p>Students</p>
+                  </div>
+                  <div className="col col-5">
+                    <p>Total</p> <p>Students</p>
+                  </div>
+                  <div className="col col-6">
+                    <p>Room</p> <p>Type</p>
+                  </div>
+                  <div className="col col-7">
+                    <p>Washroom</p> <p>Type</p>
+                  </div>
                   <div className="col col-8"></div>
                   <div className="col col-9"></div>
                 </li>
@@ -132,6 +147,17 @@ class Room extends Component {
           <div>
             <div className="no-data-container">
               <img src={noData} alt="noData" className="no-data-image" />
+            </div>
+            <div className="add-room-button-container">
+              <Link
+                to={{
+                  pathname: `/add-room/${hostelType}`,
+                  state: { hostel_type: `${hostelType}` },
+                }}
+                className="link-add-room"
+              >
+                <button className="room-view-button">Add Room</button>
+              </Link>
             </div>
           </div>
         )}

@@ -100,7 +100,7 @@ app.post("/floor-data/add/floor/:hostelType", async (request, response) => {
 
 app.get("/floor-data/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const getFloorQuery = `select * from floor where hostel_type='${hostelType}';`;
+  const getFloorQuery = `select * from floor where hostel_type='${hostelType}' order by floor_no ASC;`;
   const floorDetails = await db.all(getFloorQuery);
   response.send({ floorDetails });
 });
@@ -117,39 +117,54 @@ app.delete(
 
 app.post("/room-data/add/room/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const { roomNo, floorNo, totalStudents, roomType, washroomType } =
-    request.body;
-  const checkRoomNo = `select * from room where room_no=${roomNo} and floor_no=${floorNo} and hostel_type='${hostelType}'`;
-  const dbExistRoom = await db.get(checkRoomNo);
-  if (dbExistRoom === undefined) {
-    const getFloorIdQuery = await db.get(
-      `select id from floor where floor_no=${floorNo} and hostel_type='${hostelType}'`,
-    );
-    if (getFloorIdQuery === undefined) {
-      response.status(400);
-      response.send({
-        error_msg: "Floor doesn't exist! Please create a floor",
-      });
-    } else {
+  const { roomNo, floorNo, total, roomType, washroomType } = request.body;
+
+  const getFloorIdQuery = await db.get(
+    `select id from floor where floor_no=${floorNo} and hostel_type='${hostelType}'`,
+  );
+  if (getFloorIdQuery !== undefined) {
+    const checkRoomNo = `select * from room where room_no=${roomNo} and floor_no=${floorNo} and hostel_type='${hostelType}'`;
+    const dbExistRoom = await db.get(checkRoomNo);
+    if (dbExistRoom === undefined) {
       const floor_id = getFloorIdQuery.id;
       const present_students = 0,
         available_students = 0,
         id = uuidv4();
-      const createRoomQuery = `insert into room (id,room_no,floor_no,hostel_type,total_students,present_students,available_students,room_type,washroom_type,floor_id) values('${id}',${roomNo},${floorNo},'${hostelType}',${totalStudents},${present_students},${available_students},'${roomType}','${washroomType}','${floor_id}');`;
+      const createRoomQuery = `insert into room (id,room_no,floor_no,hostel_type,total_students,present_students,available_students,room_type,washroom_type,floor_id) values('${id}',${roomNo},${floorNo},'${hostelType}',${total},${present_students},${available_students},'${roomType}','${washroomType}','${floor_id}');`;
       await db.run(createRoomQuery);
       response.send("Success");
+      const rows = await db.all(`select id from floor`);
+      for (const each_floor of rows) {
+        const id = each_floor.id;
+        const countQuery = await db.all(
+          `select count(room.id) as count, sum(room.total_students) as total from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
+        );
+        const countRoom = countQuery[0].count;
+        let countTotal = countQuery[0].total;
+        if (countTotal === null) {
+          countTotal = 0;
+        }
+        await db.run(
+          `update floor set no_of_rooms=${countRoom}, total_students=${countTotal} where id='${id}' `,
+        );
+      }
+    } else {
+      response.status(400);
+      response.send({ error_msg: "Room Already Exits! Please check" });
     }
   } else {
     response.status(400);
-    response.send({ error_msg: "Room Already Exits! Please check" });
+    response.send({
+      error_msg: "Floor doesn't exist! Please create a floor",
+    });
   }
 });
 
 app.get("/room-data/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}' order by room_no ;`;
+  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}' order by floor_no ASC, room_no ASC ;`;
   const getDetails = await db.all(getRoomDetailQuery);
-  response.send({roomData:getDetails});
+  response.send({ roomData: getDetails });
 });
 
 app.delete(
@@ -159,5 +174,20 @@ app.delete(
     const deleteRoomQuery = `delete from room where id='${roomId}' and hostel_type='${hostelType}';`;
     await db.run(deleteRoomQuery);
     response.send("Successfully Deleted");
+    const rows = await db.all(`select id from floor`);
+    for (const each_floor of rows) {
+      const id = each_floor.id;
+      const countQuery = await db.all(
+        `select count(room.id) as count, sum(room.total_students) as total  from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
+      );
+      const countRoom = countQuery[0].count;
+      let countTotal = countQuery[0].total;
+      if (countTotal === null) {
+        countTotal = 0;
+      }
+      await db.run(
+        `update floor set no_of_rooms=${countRoom}, total_students=${countTotal} where id='${id}' `,
+      );
+    }
   },
 );

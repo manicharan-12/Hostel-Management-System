@@ -47,9 +47,9 @@ Post http://localhost:8000/room-data/add/room/boys
 Content-Type: application/json
 
 {
-    "roomNo":101,
+    "roomNo":106,
     "floorNo":1,
-    "totalStudents":4,
+    "total":4,
     "roomType":"non-ac",
     "washroomType":"attached"
 }
@@ -65,9 +65,9 @@ Post http://localhost:8000/room-data/add/room/girls
 Content-Type: application/json
 
 {
-    "roomNo":101,
+    "roomNo":103,
     "floorNo":1,
-    "totalStudents":4,
+    "total":4,
     "roomType":"non-ac",
     "washroomType":"attached"
 }
