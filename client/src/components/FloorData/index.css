@@ -77,7 +77,7 @@ tr {
   line-height: 2;
 }
 th {
-  font-family: Montserrat-Medium;
+  font-family: "Montserrat-Medium";
   font-size: 12px;
   color: #fff;
   line-height: 4;
@@ -90,7 +90,7 @@ td {
   text-align: center;
 }
 
-tbody tr:nth-child(even) {
+tbody tr:nth-child(odd) {
   background-color: #e9faff;
 }
 

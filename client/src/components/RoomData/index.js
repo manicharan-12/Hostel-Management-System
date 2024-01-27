@@ -21,6 +21,8 @@ class Room extends Component {
     hostelType: "",
     roomData: [],
     roomNo: "",
+    roomType: "",
+    washroomType: "",
   };
 
   componentDidMount() {
@@ -31,9 +33,15 @@ class Room extends Component {
   }
 
   getRoomData = async () => {
-    const { hostelType } = this.state;
+    let { hostelType, roomType, washroomType } = this.state;
+    if (roomType === "Both") {
+      roomType = "";
+    }
+    if (washroomType === "Both") {
+      washroomType = "";
+    }
     this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const api = `http://localhost:8000/room-data/${hostelType}`;
+    const api = `http://localhost:8000/room-data/${hostelType}?room_type=${roomType}&washroom_type=${washroomType}`;
     const response = await fetch(api);
     const data = await response.json();
     const roomData = data.roomData;
@@ -60,6 +68,14 @@ class Room extends Component {
     this.getRoomData();
   };
 
+  renderRoomType = (event) => {
+    this.setState({ roomType: event.target.value }, this.getRoomData);
+  };
+
+  renderWashroomType = (event) => {
+    this.setState({ washroomType: event.target.value }, this.getRoomData);
+  };
+
   renderLoadingView = () => {
     return (
       <div className="loader-container">
@@ -81,7 +97,7 @@ class Room extends Component {
   };
 
   renderSuccessView = () => {
-    const { roomData, roomNo, hostelType } = this.state;
+    const { roomData, roomNo, hostelType, roomType, washroomType } = this.state;
     const length = roomData.length;
     const newRoomData = roomData.filter((eachRoom) => {
       return eachRoom.room_no.toString().includes(roomNo.toString());
@@ -109,6 +125,21 @@ class Room extends Component {
                   onChange={this.renderRoomNO}
                 />
               </div>
+            </div>
+            <div className="filter-container">
+              <p className="filter-para">Filters</p>
+              <select onChange={this.renderRoomType} value={roomType}>
+                <option value="">Room Type</option>
+                <option value="Both">Both</option>
+                <option value="AC">AC</option>
+                <option value="Non-AC">Non-AC</option>
+              </select>
+              <select onChange={this.renderWashroomType} value={washroomType}>
+                <option value="">Washroom Type</option>
+                <option value="Both">Both</option>
+                <option value="Attached">Attached</option>
+                <option value="Non-Attached">Non-Attached</option>
+              </select>
             </div>
             <div className="room-table">
               <ul className="responsive-table">
@@ -144,7 +175,23 @@ class Room extends Component {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="no-data-room-container">
+            <div className="filter-container">
+              <p className="filter-para">Filters</p>
+              <select onChange={this.renderRoomType} value={roomType}>
+                <option value="">Room Type</option>
+                <option value="Both">Both</option>
+                <option value="AC">AC</option>
+                <option value="Non-AC">Non-AC</option>
+              </select>
+              <select onChange={this.renderWashroomType} value={washroomType}>
+                <option value="">Washroom Type</option>
+                <option value="Both">Both</option>
+                <option value="Attached">Attached</option>
+                <option value="Non-Attached">Non-Attached</option>
+              </select>
+            </div>
+            <hr />
             <div className="no-data-container">
               <img src={noData} alt="noData" className="no-data-image" />
             </div>

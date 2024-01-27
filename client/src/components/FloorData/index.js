@@ -83,7 +83,7 @@ class Floor extends Component {
                   <th>Floor Number</th>
                   <th>Number of Rooms</th>
                   <th>Present students</th>
-                  <th>Available</th>
+                  <th>Available Students</th>
                   <th>Total Students</th>
                   <th></th>
                 </tr>

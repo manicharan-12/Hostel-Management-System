@@ -162,7 +162,19 @@ app.post("/room-data/add/room/:hostelType", async (request, response) => {
 
 app.get("/room-data/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}' order by floor_no ASC, room_no ASC ;`;
+  const { room_type, washroom_type } = request.query;
+  let filterRoomQuery, filterWashroomQuery;
+  if (room_type === "") {
+    filterRoomQuery = `room_type LIKE '%${room_type}%'`;
+  } else {
+    filterRoomQuery = `room_type='${room_type}'`;
+  }
+  if (washroom_type === "") {
+    filterWashroomQuery = `washroom_type LIKE '%${washroom_type}%'`;
+  } else {
+    filterWashroomQuery = `washroom_type='${washroom_type}'`;
+  }
+  const getRoomDetailQuery = `select * from room where hostel_type='${hostelType}' and ${filterRoomQuery} and ${filterWashroomQuery} order by floor_no ASC, room_no ASC ;`;
   const getDetails = await db.all(getRoomDetailQuery);
   response.send({ roomData: getDetails });
 });
@@ -189,5 +201,92 @@ app.delete(
         `update floor set no_of_rooms=${countRoom}, total_students=${countTotal} where id='${id}' `,
       );
     }
+  },
+);
+
+app.post("/student-data/add/student/:hostelType", async (request, response) => {
+  const { hostelType } = request.params;
+  const {
+    name,
+    hallTicket_number,
+    branch,
+    current_year,
+    room_no,
+    gender,
+    mobile_number,
+  } = request.body;
+  const checkStudentQuery = `select * from student where hall_ticket_number='${hallTicket_number}'`;
+  const checkStudent = await db.get(checkStudentQuery);
+  if (checkStudent === undefined) {
+    const checkRoomQuery = `select * from room where room_no=${room_no} and hostel_type='${hostelType}'`;
+    const checkRoom = await db.get(checkRoomQuery);
+    if (checkRoom !== undefined) {
+      const room_id = checkRoom.id;
+      const floor_id = checkRoom.floor_id;
+      if (floor_id !== undefined) {
+        const roomDetailQuery = `select total_students as total, present_students as present from room where id='${room_id}'`;
+        const roomDetail = await db.get(roomDetailQuery);
+        const total = roomDetail.total;
+        const present = roomDetail.present;
+        if (present < total) {
+          const id = uuidv4();
+          const addStudentQuery = `insert into student
+        (id,student_name,hall_ticket_number,branch,current_year,room_no,gender,mobile_number,room_id,floor_id, hostel_type)
+        values('${id}', '${name}', '${hallTicket_number}', '${branch}', ${current_year}, ${room_no}, '${gender}', ${mobile_number}, '${room_id}','${floor_id}', '${hostelType}')
+        `;
+          await db.run(addStudentQuery);
+          response.send("Success");
+          const countQuery = `select count(id) as total from student where room_id='${room_id}'`;
+          const count = await db.get(countQuery);
+          const totalPresent = count.total;
+          const available = total - totalPresent;
+          const updateRoomDetailQuery = `update room set available_students=${available}, present_students=${totalPresent} where id='${room_id}';`;
+          await db.run(updateRoomDetailQuery);
+        } else {
+          response.status(401);
+          response.send({
+            error_msg: "Room Capacity full! Please select another room",
+          });
+        }
+      } else {
+        response.status(401);
+        response.send({ error_msg: "Floor doesn't exist! Please check" });
+      }
+    } else {
+      response.status(401);
+      response.send({ error_msg: "Room Doesn't exist! Please check" });
+    }
+  } else {
+    response.status(401);
+    response.send({ error_msg: "Student Already Exist! Please check" });
+  }
+});
+
+app.get("/student-data/:hostelType", async (request, response) => {
+  const { hostelType } = request.params;
+  const getStudentDetailsQuery = `select * from student where hostel_type='${hostelType}'`;
+  const getsStudentDetails = await db.all(getStudentDetailsQuery);
+  response.send(getsStudentDetails);
+});
+
+app.delete(
+  "/student-data/delete/student/:studentId",
+  async (request, response) => {
+    const { hostelType, studentId } = request.params;
+    const roomIdQuery = `select room_id from student where id='${studentId}'`;
+    const roomId = await db.get(roomIdQuery);
+    const room_id = roomId.room_id;
+    const totalCapacityQuery = `select total_students as total from room where id='${room_id}'`;
+    const totalCapacity = await db.get(totalCapacityQuery);
+    const capacity = totalCapacity.total;
+    const deleteQuery = `delete from student where id='${studentId}'`;
+    await db.run(deleteQuery);
+    response.send("Deleted");
+    const countQuery = `select count(id) as total from student where room_id='${room_id}'`;
+    const count = await db.get(countQuery);
+    const totalPresent = count.total;
+    const available = capacity - totalPresent;
+    const updateRoomDetailQuery = `update room set available_students=${available}, present_students=${totalPresent} where id='${room_id}';`;
+    await db.run(updateRoomDetailQuery);
   },
 );

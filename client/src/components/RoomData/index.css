@@ -108,8 +108,6 @@ h2 {
     .table-header {
       display: none;
     }
-    .table-row {
-    }
     li {
       display: block;
     }
@@ -126,6 +124,40 @@ h2 {
         flex-basis: 50%;
         text-align: right;
       }
+    }
+  }
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 12px;
+
+  select {
+    margin-right: 5px;
+    width: fit-content;
+    border: none;
+    border-radius: 5px;
+  }
+}
+
+.filter-para {
+  margin-right: 5px;
+}
+
+.no-data-room-container {
+  padding: 32px;
+  hr {
+    border: 1.5px solid #000;
+    margin-top: 3px;
+  }
+
+  .filter-container {
+    select {
+      border: 1.2px solid #000;
+      padding: 4px;
     }
   }
 }

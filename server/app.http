@@ -55,7 +55,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/room-data/boys
+GET http://localhost:8000/room-data/boys/?room_type=&washroom_type=
 
 ###
 DELETE http://localhost:8000/room-data/delete/boys/21f989d6-744f-476d-bae5-52ba3573c8d4
@@ -77,3 +77,24 @@ GET http://localhost:8000/room-data/girls
 
 ###
 DELETE http://localhost:8000/room-data/delete/girls/80cdc8ed-6fa9-4831-87d4-95e21750bef7
+
+
+###
+POST http://localhost:8000/student-data/add/student/boys
+Content-Type: application/json
+
+{
+    "name":"Mani Charan Reddy Gade",
+    "hallTicket_number":"21EG112B31",
+    "branch":"IT",
+    "current_year":3,
+    "room_no": 101,
+    "gender":"Male",
+    "mobile_number":7013680808
+}
+
+###
+GET http://localhost:8000/student-data/boys
+
+###
+DELETE http://localhost:8000/student-data/delete/student/f6cb35d3-fc3a-4f6e-a5c4-1eb319b069e7
