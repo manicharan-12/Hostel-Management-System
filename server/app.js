@@ -193,15 +193,19 @@ app.delete(
     for (const each_floor of rows) {
       const id = each_floor.id;
       const countQuery = await db.all(
-        `select count(room.id) as count, sum(room.total_students) as total  from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
+        `select count(room.id) as count, sum(room.total_students) as total, sum(room.available_students) as available from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
       );
       const countRoom = countQuery[0].count;
       let countTotal = countQuery[0].total;
+      let available = countQuery[0].available;
       if (countTotal === null) {
         countTotal = 0;
       }
+      if (available === null) {
+        available = 0;
+      }
       await db.run(
-        `update floor set no_of_rooms=${countRoom}, total_students=${countTotal} where id='${id}' `,
+        `update floor set no_of_rooms=${countRoom}, total_students=${countTotal}, available_students=${available} where id='${id}' `,
       );
     }
   },

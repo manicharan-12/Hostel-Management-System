@@ -25,12 +25,12 @@ const FloorDetails = (props) => {
         <p>{no_of_rooms}</p>
       </div>
       <div className="col col-floor" data-label="Present Students">
-        <p style={{ color: present_color, "font-weight": "bolder" }}>
+        <p style={{ color: present_color, fontWeight: "bolder" }}>
           {present_students}
         </p>
       </div>
       <div className="col col-floor" data-label="Available Students">
-        <p style={{ color: available_color, "font-weight": "bolder" }}>
+        <p style={{ color: available_color, fontWeight: "bolder" }}>
           {available_students}
         </p>
       </div>

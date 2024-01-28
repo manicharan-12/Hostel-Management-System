@@ -6,6 +6,7 @@ import FloorDetails from "../FloorDetails";
 import failure from "../Images/failure-image.png";
 import noData from "../Images/no data.png";
 import axios from "axios";
+import Back from "../Back";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -26,8 +27,8 @@ class Floor extends Component {
   };
 
   componentDidMount() {
-    const { hostel_type } = this.props.match.params;
-    this.setState({ hostelType: hostel_type }, () => {
+    const { hostelType } = this.props.match.params;
+    this.setState({ hostelType: hostelType }, () => {
       this.getFloorDetails();
     });
   }
@@ -186,12 +187,12 @@ class Floor extends Component {
   };
 
   render() {
-    const { errorStatus, errorMsg, show, floorNo } = this.state;
-    console.log(floorNo);
+    const { errorStatus, errorMsg, show } = this.state;
     return (
       <>
         <Header />
         <div className="floor-detail-container">
+          <Back />
           {this.renderFloorData()}
           <div className="button-container-floor">
             <button

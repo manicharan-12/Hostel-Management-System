@@ -27,14 +27,14 @@ const RoomData = (props) => {
       <div
         className="col col-3"
         data-label="Present Students"
-        style={{ color: present_color, "font-weight": "bolder" }}
+        style={{ color: present_color, fontWeight: "bolder" }}
       >
         {present_students}
       </div>
       <div
         className="col col-4"
         data-label="Available Students"
-        style={{ color: available_color, "font-weight": "bolder" }}
+        style={{ color: available_color, fontWeight: "bolder" }}
       >
         {available_students}
       </div>

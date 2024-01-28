@@ -53,6 +53,7 @@
 
 .floor-data-container {
   padding: 32px;
+  padding-top: 5px;
 }
 .floor-data {
   display: flex;

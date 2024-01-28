@@ -7,6 +7,7 @@ import RoomData from "../RoomDetails";
 import noData from "../Images/no data.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Back from "../Back";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -26,8 +27,8 @@ class Room extends Component {
   };
 
   componentDidMount() {
-    const { hostel_type } = this.props.match.params;
-    this.setState({ hostelType: hostel_type }, () => {
+    const { hostelType } = this.props.match.params;
+    this.setState({ hostelType: hostelType }, () => {
       this.getRoomData();
     });
   }
@@ -230,6 +231,7 @@ class Room extends Component {
     return (
       <div>
         <Header />
+        <Back />
         <div className="room-detail-container">{this.renderFloorData()}</div>
       </div>
     );

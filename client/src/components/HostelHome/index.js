@@ -3,6 +3,7 @@ import Header from "../Header";
 import "./index.css";
 import image from "../Images/manage.png";
 import HostelType from "../../context/hostelType";
+import Back from "../Back";
 
 const HostelHome = (props) => {
   let hostelType = props.match.params.hostelType;
@@ -16,6 +17,7 @@ const HostelHome = (props) => {
         return (
           <div className="main-container-home">
             <Header />
+            <Back />
             <div className="home-container-2">
               <div className="image-container-home">
                 <img src={image} alt="manage" className="manage-img" />

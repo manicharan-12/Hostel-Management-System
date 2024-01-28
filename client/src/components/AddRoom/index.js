@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Header from "../Header";
 import "./index.css";
+import Back from "../Back";
 
 class AddRoom extends Component {
   state = {
@@ -15,9 +16,8 @@ class AddRoom extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
-    const { hostel_type } = this.props.location.state;
-    this.setState({ hostelType: hostel_type });
+    const { hostelType } = this.props.match.params;
+    this.setState({ hostelType: hostelType });
   }
 
   renderFloorNo = (event) => {
@@ -42,7 +42,6 @@ class AddRoom extends Component {
     event.preventDefault();
     const { floorNo, roomNo, total, roomType, washroomType, hostelType } =
       this.state;
-    console.log(hostelType);
     if (floorNo === "" || roomNo === "" || total === "") {
       this.setState({
         errorStatus: true,
@@ -77,6 +76,7 @@ class AddRoom extends Component {
     return (
       <div>
         <Header />
+        <Back />
         <div className="add-room-main-container">
           <h1>Add Room</h1>
           <p>Fill out the all the mentioned room details in the below form</p>
@@ -112,7 +112,13 @@ class AddRoom extends Component {
                 <button className="button-1" type="submit">
                   Add
                 </button>
-                <button className="button-2" type="button">
+                <button
+                  className="button-2"
+                  type="button"
+                  onClick={() => {
+                    this.props.history.goBack();
+                  }}
+                >
                   Cancel
                 </button>
               </div>

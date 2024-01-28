@@ -19,7 +19,7 @@ GET http://localhost:8000/floor-data/boys
 
 
 ###
-DELETE  http://localhost:8000/floor-data/delete/boys/dd6d9a6e-bbc9-44e6-94dd-2d10d910abce
+DELETE  http://localhost:8000/floor-data/delete/boys/c5750f3c-b43c-4ef7-9a09-804cec284f94
 
 // Get the id from the "GET http://localhost:8000/boys/floor-data" request
 
