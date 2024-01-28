@@ -12,20 +12,38 @@ const FloorDetails = (props) => {
     total_students,
   } = details;
 
+  const available_color = available_students > 0 ? "#22bb33" : "#bb2124";
+  const present_color =
+    present_students === total_students ? "#bb2124" : "#22bb33";
+
   return (
-    <tr>
-      <td>{floor_no}</td>
-      <td>{no_of_rooms}</td>
-      <td>{present_students}</td>
-      <td>{available_students}</td>
-      <td>{total_students}</td>
-      <td>
+    <li className="table-row-floor">
+      <div className="col col-floor" data-label="Floor Number">
+        <p>{floor_no}</p>
+      </div>
+      <div className="col col-floor" data-label="Number Of Rooms">
+        <p>{no_of_rooms}</p>
+      </div>
+      <div className="col col-floor" data-label="Present Students">
+        <p style={{ color: present_color, "font-weight": "bolder" }}>
+          {present_students}
+        </p>
+      </div>
+      <div className="col col-floor" data-label="Available Students">
+        <p style={{ color: available_color, "font-weight": "bolder" }}>
+          {available_students}
+        </p>
+      </div>
+      <div className="col col-floor" data-label="Total Students">
+        <p>{total_students}</p>
+      </div>
+      <div className="col col-floor" data-label="Delete">
         <MdDelete
           className="delete-icon"
           onClick={() => onClickDeleteFloor(id)}
         />
-      </td>
-    </tr>
+      </div>
+    </li>
   );
 };
 

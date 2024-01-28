@@ -26,7 +26,7 @@ class Floor extends Component {
   };
 
   componentDidMount() {
-    const { hostel_type } = this.props.location.state;
+    const { hostel_type } = this.props.match.params;
     this.setState({ hostelType: hostel_type }, () => {
       this.getFloorDetails();
     });
@@ -77,18 +77,29 @@ class Floor extends Component {
             <div className="header-floor">
               <h1>Floor Details</h1>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Floor Number</th>
-                  <th>Number of Rooms</th>
-                  <th>Present students</th>
-                  <th>Available Students</th>
-                  <th>Total Students</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
+            <div className="floor-table">
+              <ul className="responsive-table-floor">
+                <li className="table-header-floor">
+                  <div className="col col-floor">
+                    <p>Floor</p> <p>Number</p>
+                  </div>
+                  <div className="col col-floor">
+                    <p>Number</p> <p>of Rooms</p>
+                  </div>
+                  <div className="col col-floor">
+                    <p>Present</p>
+                    <p>students</p>
+                  </div>
+                  <div className="col col-floor">
+                    <p>Available</p>
+                    <p>Students</p>
+                  </div>
+                  <div className="col col-floor">
+                    <p>Total</p>
+                    <p></p>Students
+                  </div>
+                  <div className="col col-floor-last"></div>
+                </li>
                 {floorDetails.map((eachFloor) => (
                   <FloorDetails
                     key={eachFloor.id}
@@ -96,8 +107,8 @@ class Floor extends Component {
                     onClickDeleteFloor={this.onClickDeleteFloor}
                   />
                 ))}
-              </tbody>
-            </table>
+              </ul>
+            </div>
           </div>
         ) : (
           <div>
@@ -156,8 +167,6 @@ class Floor extends Component {
       body: JSON.stringify(postFloor),
     };
     const response = await fetch(api, option);
-
-    console.log(response);
     if (response.ok !== true) {
       const data = await response.json();
       this.setState({

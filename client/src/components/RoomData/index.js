@@ -26,7 +26,7 @@ class Room extends Component {
   };
 
   componentDidMount() {
-    const { hostel_type } = this.props.location.state;
+    const { hostel_type } = this.props.match.params;
     this.setState({ hostelType: hostel_type }, () => {
       this.getRoomData();
     });

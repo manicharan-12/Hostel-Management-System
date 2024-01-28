@@ -3,3 +3,14 @@
   cursor: pointer;
   outline: none;
 }
+
+.table-row-floor {
+  background: #fff;
+}
+.table-row-floor:nth-child(odd) {
+  background-color: #e9faff;
+}
+.table-row-floor:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}

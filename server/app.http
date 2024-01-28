@@ -85,10 +85,10 @@ Content-Type: application/json
 
 {
     "name":"Mani Charan Reddy Gade",
-    "hallTicket_number":"21EG112B31",
+    "hallTicket_number":"21EG112B33",
     "branch":"IT",
     "current_year":3,
-    "room_no": 101,
+    "room_no": 102,
     "gender":"Male",
     "mobile_number":7013680808
 }
@@ -97,4 +97,4 @@ Content-Type: application/json
 GET http://localhost:8000/student-data/boys
 
 ###
-DELETE http://localhost:8000/student-data/delete/student/f6cb35d3-fc3a-4f6e-a5c4-1eb319b069e7
+DELETE http://localhost:8000/student-data/delete/student/3f2ac41d-cf91-46da-b54c-2f47a6111834

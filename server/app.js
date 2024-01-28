@@ -128,24 +128,27 @@ app.post("/room-data/add/room/:hostelType", async (request, response) => {
     if (dbExistRoom === undefined) {
       const floor_id = getFloorIdQuery.id;
       const present_students = 0,
-        available_students = 0,
         id = uuidv4();
-      const createRoomQuery = `insert into room (id,room_no,floor_no,hostel_type,total_students,present_students,available_students,room_type,washroom_type,floor_id) values('${id}',${roomNo},${floorNo},'${hostelType}',${total},${present_students},${available_students},'${roomType}','${washroomType}','${floor_id}');`;
+      const createRoomQuery = `insert into room (id,room_no,floor_no,hostel_type,total_students,present_students,available_students,room_type,washroom_type,floor_id) values('${id}',${roomNo},${floorNo},'${hostelType}',${total},${present_students},${total},'${roomType}','${washroomType}','${floor_id}');`;
       await db.run(createRoomQuery);
       response.send("Success");
       const rows = await db.all(`select id from floor`);
       for (const each_floor of rows) {
         const id = each_floor.id;
         const countQuery = await db.all(
-          `select count(room.id) as count, sum(room.total_students) as total from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
+          `select count(room.id) as count, sum(room.total_students) as total, sum(room.available_students) as available from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
         );
         const countRoom = countQuery[0].count;
         let countTotal = countQuery[0].total;
+        let available = countQuery[0].available;
         if (countTotal === null) {
           countTotal = 0;
         }
+        if (available === null) {
+          available = 0;
+        }
         await db.run(
-          `update floor set no_of_rooms=${countRoom}, total_students=${countTotal} where id='${id}' `,
+          `update floor set no_of_rooms=${countRoom}, total_students=${countTotal}, available_students=${available} where id='${id}' `,
         );
       }
     } else {
@@ -242,6 +245,29 @@ app.post("/student-data/add/student/:hostelType", async (request, response) => {
           const available = total - totalPresent;
           const updateRoomDetailQuery = `update room set available_students=${available}, present_students=${totalPresent} where id='${room_id}';`;
           await db.run(updateRoomDetailQuery);
+          const rows = await db.all(`select id from floor`);
+          for (const each_floor of rows) {
+            const id = each_floor.id;
+            const countQuery = await db.all(
+              `select count(room.id) as count, sum(room.total_students) as total, sum(room.available_students) as available, sum(room.present_students)as present from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
+            );
+            const countRoom = countQuery[0].count;
+            let countTotal = countQuery[0].total;
+            let available = countQuery[0].available;
+            let present = countQuery[0].present;
+            if (countTotal === null) {
+              countTotal = 0;
+            }
+            if (available === null) {
+              available = 0;
+            }
+            if (present === null) {
+              present = 0;
+            }
+            await db.run(
+              `update floor set no_of_rooms=${countRoom}, total_students=${countTotal}, available_students=${available},present_students=${present} where id='${id}' `,
+            );
+          }
         } else {
           response.status(401);
           response.send({

@@ -4,11 +4,15 @@ import "./index.css";
 import image from "../Images/manage.png";
 import HostelType from "../../context/hostelType";
 
-const HostelHome = () => {
+const HostelHome = (props) => {
+  let hostelType = props.match.params.hostelType;
   return (
     <HostelType.Consumer>
       {(value) => {
-        const { hostelType } = value;
+        if (value.hostelType === "") {
+        } else {
+          hostelType = value.hostelType;
+        }
         return (
           <div className="main-container-home">
             <Header />
