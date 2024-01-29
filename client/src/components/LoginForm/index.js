@@ -5,19 +5,23 @@ import "./index.css";
 import { Redirect, withRouter } from "react-router-dom";
 
 class Login extends Component {
-  state = { email: "", password: "", errorMsg: "" };
+  state = { email: "", password: "", role: "", errorMsg: "" };
 
   onSubmitSuccess = (jwtToken) => {
+    const { role } = this.state;
     const { history } = this.props;
     Cookies.set("jwt_token", jwtToken, { expires: 1, path: "/" });
-    history.replace("/");
+    Cookies.set("role", role, { expires: 1, path: "/" });
+    if (role === "super admin" || role === "admin") {
+      history.replace("/");
+    }
   };
 
   submitField = async (event) => {
     event.preventDefault();
-    const { email, password } = this.state;
+    const { email, password, role } = this.state;
     const url = "http://localhost:8000/login/main-admin/";
-    const postObject = { email: email, password: password };
+    const postObject = { email: email, password: password, role: role };
     const option = {
       method: "POST",
       headers: {
@@ -40,6 +44,10 @@ class Login extends Component {
 
   renderPassword = (event) => {
     this.setState({ password: event.target.value });
+  };
+
+  renderRole = (event) => {
+    this.setState({ role: event.target.value });
   };
 
   renderEmailField = () => {
@@ -80,6 +88,28 @@ class Login extends Component {
     );
   };
 
+  renderRoleField = () => {
+    const { role } = this.state;
+    return (
+      <>
+        <label htmlFor="role" className="labels">
+          Role:
+        </label>
+        <select
+          className="input-container"
+          id="role"
+          onChange={this.renderRole}
+          value={role}
+        >
+          <option value="">Choose Your Role from below</option>
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+          <option value="super admin">Super Admin</option>
+        </select>
+      </>
+    );
+  };
+
   render() {
     const { errorMsg } = this.state;
     const jwtToken = Cookies.get("jwt_token");
@@ -99,6 +129,7 @@ class Login extends Component {
               <div className="email-container">
                 {this.renderPasswordField()}
               </div>
+              <div className="email-container">{this.renderRoleField()}</div>
               <div className="button-container">
                 <button type="submit" className="login-button">
                   Login

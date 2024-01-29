@@ -7,6 +7,19 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:8000/add/admin/data
+Content-Type: application/json
+
+{
+    "email":"admin2@anurag.edu.in",
+    "password":"admin2",
+    "admin_type":"super admin",
+    "hostel_type":"both"
+}
+
+
+###
 POST http://localhost:8000/floor-data/add/floor/boys
 Content-Type: application/json
 

@@ -24,7 +24,7 @@ const initializeDbAndServer = async () => {
     });
     const password = "admin1";
     const hashedPassword = await bcrypt.hash(password, 10);
-    const updateQuery = `update main_admin set password='${hashedPassword}' where email="admin1@anurag.edu.in"`;
+    const updateQuery = `update admin set password='${hashedPassword}' where email="admin1@anurag.edu.in"`;
     await db.run(updateQuery);
     await db.run(`PRAGMA foreign_keys=1;`);
   } catch (e) {
@@ -57,8 +57,8 @@ const authenticateToken = (request, response, next) => {
 };
 
 app.post("/login/main-admin/", async (request, response) => {
-  const { email, password } = request.body;
-  const checkUser = `select * from main_admin where email='${email}';`;
+  const { email, password, role } = request.body;
+  const checkUser = `select * from admin where email='${email}' and role='${role}';`;
   const dbUserExist = await db.get(checkUser);
   if (dbUserExist !== undefined) {
     const checkPassword = await bcrypt.compare(password, dbUserExist.password);
@@ -67,12 +67,28 @@ app.post("/login/main-admin/", async (request, response) => {
       const jwt_token = jwt.sign(payload, "21eg112b31");
       response.send({ jwt_token });
     } else {
-      response.status(400);
+      response.status(401);
       response.send({ error_msg: "Wrong Password" });
     }
   } else {
     response.status(401);
-    response.send({ error_msg: "Invalid Email Id" });
+    response.send({
+      error_msg: "Invalid Email Id or Invalid Role. Please Check to Continue",
+    });
+  }
+});
+
+app.post("/add/admin/data", async (request, response) => {
+  const { email, password, admin_type, hostel_type } = request.body;
+  const checkAdminQuery = `select * from admin where email='${email}' and role='${admin_type}'`;
+  const checkAdmin = await db.get(checkAdminQuery);
+  if (checkAdmin === undefined) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const insertAdminQuery = `insert into admin (email,password,role,hostel_type) values('${email}', '${hashedPassword}', '${admin_type}', '${hostel_type}')`;
+    await db.run(insertAdminQuery);
+    response.send("success");
+  } else {
+    response.send({ error_msg: "Email already exits" });
   }
 });
 

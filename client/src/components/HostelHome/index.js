@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Header from "../Header";
 import "./index.css";
 import image from "../Images/manage.png";
 import HostelType from "../../context/hostelType";
 import Back from "../Back";
+import Cookies from "js-cookie";
 
 const HostelHome = (props) => {
   let hostelType = props.match.params.hostelType;
+  const role = Cookies.get("role");
   return (
     <HostelType.Consumer>
       {(value) => {
@@ -48,6 +50,23 @@ const HostelHome = (props) => {
                   >
                     <h4 className="content">Floor Details</h4>
                   </Link>
+                  {role === "super admin" ? (
+                    <Link to="/add-admin" className="box">
+                      <h4 className="content">Add Admin</h4>
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+                  {role === "super admin" ? (
+                    <Link to="/edit-admin" className="box">
+                      <h4 className="content">Edit Admin</h4>
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+                  <Link to="" className="box">
+                    <h4 className="content">Edit Profile</h4>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -58,4 +77,4 @@ const HostelHome = (props) => {
   );
 };
 
-export default HostelHome;
+export default withRouter(HostelHome);

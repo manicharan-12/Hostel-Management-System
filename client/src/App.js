@@ -9,6 +9,9 @@ import React from "react";
 import { Component } from "react";
 import Room from "./components/RoomData";
 import AddRoom from "./components/AddRoom";
+import Access from "./components/Access";
+import AddAdmin from "./components/AddAdmin";
+import EditAdmin from "./components/EditAdmin";
 
 class HostelTypeProvider extends Component {
   state = {
@@ -39,6 +42,8 @@ const App = () => {
       <Switch>
         <Route exact path="/login/admin" component={Login} />
         <ProtectedRoute exact path="/" component={Home} />
+        <ProtectedRoute exact path="/edit-admin" component={EditAdmin} />
+        <ProtectedRoute exact path="/add-admin" component={AddAdmin} />
         <ProtectedRoute exact path="/:hostelType" component={HostelHome} />
         <ProtectedRoute
           exact
@@ -51,6 +56,7 @@ const App = () => {
           path="/add-room/:hostelType"
           component={AddRoom}
         />
+        <ProtectedRoute exact path="/no-access" component={Access} />
         <Redirect to="/" />
       </Switch>
     </HostelTypeProvider>

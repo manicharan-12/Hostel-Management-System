@@ -3,10 +3,15 @@ import Cookies from "js-cookie";
 
 const ProtectedRoute = (props) => {
   const jwtToken = Cookies.get("jwt_token");
+  const role = Cookies.get("role");
   if (jwtToken === undefined) {
     return <Redirect to="/login/admin" />;
   }
-  return <Route {...props} />;
+  if (role === "super admin" || role === "admin") {
+    return <Route {...props} />;
+  } else {
+    return <Redirect to="/no-access" />;
+  }
 };
 
 export default ProtectedRoute;

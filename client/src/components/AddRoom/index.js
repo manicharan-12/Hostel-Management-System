@@ -78,9 +78,9 @@ class AddRoom extends Component {
         <Header />
         <Back />
         <div className="add-room-main-container">
-          <h1>Add Room</h1>
-          <p>Fill out the all the mentioned room details in the below form</p>
           <div className="add-room-container">
+            <h1>Add Room</h1>
+            <p>Fill out the all the mentioned room details in the below form</p>
             <form className="add-room-form" onSubmit={this.addRoom}>
               <div className="add-room-data">
                 <label>Floor No</label>
