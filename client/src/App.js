@@ -12,6 +12,7 @@ import AddRoom from "./components/AddRoom";
 import Access from "./components/Access";
 import AddAdmin from "./components/AddAdmin";
 import EditAdmin from "./components/EditAdmin";
+import StudentData from "./components/StudentData";
 
 class HostelTypeProvider extends Component {
   state = {
@@ -44,6 +45,7 @@ const App = () => {
         <ProtectedRoute exact path="/" component={Home} />
         <ProtectedRoute exact path="/edit-admin" component={EditAdmin} />
         <ProtectedRoute exact path="/add-admin" component={AddAdmin} />
+        <ProtectedRoute exact path="/no-access" component={Access} />
         <ProtectedRoute exact path="/:hostelType" component={HostelHome} />
         <ProtectedRoute
           exact
@@ -56,7 +58,11 @@ const App = () => {
           path="/add-room/:hostelType"
           component={AddRoom}
         />
-        <ProtectedRoute exact path="/no-access" component={Access} />
+        <ProtectedRoute
+          exact
+          path="/student-data/:hostelType"
+          component={StudentData}
+        />
         <Redirect to="/" />
       </Switch>
     </HostelTypeProvider>

@@ -1,7 +1,14 @@
 .access-container {
+  min-height: 70vh;
+}
+
+.access-container-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 70vh;
+}
+
+.no-access-image {
+  width: 30%;
 }

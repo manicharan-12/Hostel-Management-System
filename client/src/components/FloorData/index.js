@@ -68,8 +68,18 @@ class Floor extends Component {
     );
   };
 
+  renderFailureView = () => {
+    return (
+      <div className="failure-container">
+        <div className="image-container-failure">
+          <img src={failure} alt="fail" />
+        </div>
+      </div>
+    );
+  };
+
   renderSuccessView = () => {
-    const { floorDetails } = this.state;
+    const { floorDetails, errorStatus, errorMsg, show } = this.state;
     const length = floorDetails.length;
     return (
       <>
@@ -118,17 +128,64 @@ class Floor extends Component {
             </div>
           </div>
         )}
-      </>
-    );
-  };
-
-  renderFailureView = () => {
-    return (
-      <div className="failure-container">
-        <div className="image-container-failure">
-          <img src={failure} alt="fail" />
+        <div className="button-container-floor">
+          <button
+            className="add-floor-button button"
+            onClick={() => {
+              this.setState({ show: true });
+            }}
+          >
+            Add Floor
+          </button>
         </div>
-      </div>
+        {show ? (
+          <div className="form-container-floor">
+            <div className="form-container-">
+              <div className="close-button-container-floor">
+                <button
+                  className="close-button-floor"
+                  onClick={() => {
+                    this.setState({
+                      show: false,
+                      errorStatus: false,
+                      errorMsg: "",
+                    });
+                  }}
+                >
+                  &times;
+                </button>
+              </div>
+              <form className="form-floor" onSubmit={this.addFloor}>
+                <div className="input-container-floor">
+                  <label htmlFor="floor-no" className="floor-no-label">
+                    Enter Floor No:
+                  </label>
+                  <input
+                    className="input-floor"
+                    type="text"
+                    id="floor-no"
+                    onChange={(event) => {
+                      this.setState({ floorNo: event.target.value });
+                    }}
+                  />
+                </div>
+                <button type="submit" className="submit-button-floor">
+                  Submit
+                </button>
+              </form>
+              {errorStatus ? (
+                <div className="error-msg-container-floor">
+                  <p className="error-msg-add-floor">{errorMsg}</p>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </>
     );
   };
 
@@ -187,70 +244,12 @@ class Floor extends Component {
   };
 
   render() {
-    const { errorStatus, errorMsg, show } = this.state;
     return (
       <>
         <Header />
         <div className="floor-detail-container">
           <Back />
           {this.renderFloorData()}
-          <div className="button-container-floor">
-            <button
-              className="add-floor-button button"
-              onClick={() => {
-                this.setState({ show: true });
-              }}
-            >
-              Add Floor
-            </button>
-          </div>
-          {show ? (
-            <div className="form-container-floor">
-              <div className="form-container-">
-                <div className="close-button-container-floor">
-                  <button
-                    className="close-button-floor"
-                    onClick={() => {
-                      this.setState({
-                        show: false,
-                        errorStatus: false,
-                        errorMsg: "",
-                      });
-                    }}
-                  >
-                    &times;
-                  </button>
-                </div>
-                <form className="form-floor" onSubmit={this.addFloor}>
-                  <div className="input-container-floor">
-                    <label htmlFor="floor-no" className="floor-no-label">
-                      Enter Floor No:
-                    </label>
-                    <input
-                      className="input-floor"
-                      type="text"
-                      id="floor-no"
-                      onChange={(event) => {
-                        this.setState({ floorNo: event.target.value });
-                      }}
-                    />
-                  </div>
-                  <button type="submit" className="submit-button-floor">
-                    Submit
-                  </button>
-                </form>
-                {errorStatus ? (
-                  <div className="error-msg-container-floor">
-                    <p className="error-msg-add-floor">{errorMsg}</p>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
         </div>
       </>
     );

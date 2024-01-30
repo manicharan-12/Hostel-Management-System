@@ -22,10 +22,12 @@ const initializeDbAndServer = async () => {
     app.listen(8000, () => {
       console.log("Server running at http://localhost:8000");
     });
-    const password = "admin1";
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const updateQuery = `update admin set password='${hashedPassword}' where email="admin1@anurag.edu.in"`;
-    await db.run(updateQuery);
+    //Use the Below codes while creating main super admin
+    // const password = "admin1";
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // const id=uuidv4()
+    // const updateQuery = `update admin set password='${hashedPassword}', id='${id}', name='admin1' where email="admin1@anurag.edu.in"`;
+    // await db.run(updateQuery);
     await db.run(`PRAGMA foreign_keys=1;`);
   } catch (e) {
     console.log(`DataBase Error ${e.message}`);
@@ -79,17 +81,31 @@ app.post("/login/main-admin/", async (request, response) => {
 });
 
 app.post("/add/admin/data", async (request, response) => {
-  const { email, password, admin_type, hostel_type } = request.body;
+  const { email, password, admin_type, hostel_type, name } = request.body;
   const checkAdminQuery = `select * from admin where email='${email}' and role='${admin_type}'`;
   const checkAdmin = await db.get(checkAdminQuery);
   if (checkAdmin === undefined) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const insertAdminQuery = `insert into admin (email,password,role,hostel_type) values('${email}', '${hashedPassword}', '${admin_type}', '${hostel_type}')`;
+    const id = uuidv4();
+    const insertAdminQuery = `insert into admin (email,password,role,hostel_type,id,name) values('${email}', '${hashedPassword}', '${admin_type}', '${hostel_type}', '${id}', '${name}')`;
     await db.run(insertAdminQuery);
     response.send("success");
   } else {
     response.send({ error_msg: "Email already exits" });
   }
+});
+
+app.get("/admin-data", async (request, response) => {
+  const getAdminQuery = `select * from admin where email !='admin1@anurag.edu.in' order by role desc`;
+  const getAdmin = await db.all(getAdminQuery);
+  response.send({ admin_list: getAdmin });
+});
+
+app.delete("/delete/admin-data/:id", async (request, response) => {
+  const { id } = request.params;
+  const deleteAdminQuery = `delete from admin where id='${id}'`;
+  await db.run(deleteAdminQuery);
+  response.send("Success");
 });
 
 app.post("/floor-data/add/floor/:hostelType", async (request, response) => {
@@ -312,13 +328,13 @@ app.get("/student-data/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
   const getStudentDetailsQuery = `select * from student where hostel_type='${hostelType}'`;
   const getsStudentDetails = await db.all(getStudentDetailsQuery);
-  response.send(getsStudentDetails);
+  response.send({ student_data: getsStudentDetails });
 });
 
 app.delete(
   "/student-data/delete/student/:studentId",
   async (request, response) => {
-    const { hostelType, studentId } = request.params;
+    const { studentId } = request.params;
     const roomIdQuery = `select room_id from student where id='${studentId}'`;
     const roomId = await db.get(roomIdQuery);
     const room_id = roomId.room_id;

@@ -8,6 +8,14 @@ const ProtectedRoute = (props) => {
     return <Redirect to="/login/admin" />;
   }
   if (role === "super admin" || role === "admin") {
+    if (role === "admin") {
+      if (props.path === "/edit-admin") {
+        return <Redirect to="/no-access" />;
+      }
+      if (props.path === "/add-admin") {
+        return <Redirect to="/no-access" />;
+      }
+    }
     return <Route {...props} />;
   } else {
     return <Redirect to="/no-access" />;

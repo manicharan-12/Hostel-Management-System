@@ -1,0 +1,8 @@
+.edit-admin {
+  padding: 32px;
+}
+
+.col-admin {
+  flex-basis: 20%;
+  border-right: none !important;
+}

@@ -13,13 +13,14 @@ class AddAdmin extends Component {
     hostel_type: "both",
     error_msg: "",
     isError: false,
+    name: "",
   };
 
   addAdminData = async (event) => {
     event.preventDefault();
-    const { email, password, adminType, hostel_type } = this.state;
+    const { email, password, adminType, hostel_type, name } = this.state;
     console.log(email, password, adminType, hostel_type);
-    if (email === "" || password === "" || adminType === "") {
+    if (email === "" || password === "" || adminType === "" || name === "") {
       this.setState({
         error_msg: "All fields need to be filled",
         isError: true,
@@ -38,6 +39,7 @@ class AddAdmin extends Component {
             password,
             admin_type: adminType,
             hostel_type,
+            name,
           };
           const option = {
             method: "POST",
@@ -61,6 +63,7 @@ class AddAdmin extends Component {
           password,
           admin_type: adminType,
           hostel_type,
+          name,
         };
         const option = {
           method: "POST",
@@ -99,6 +102,10 @@ class AddAdmin extends Component {
     }
   };
 
+  renderName = (event) => {
+    this.setState({ name: event.target.value });
+  };
+
   renderHostelType = (event) => {
     this.setState({ hostel_type: event.target.value });
   };
@@ -114,6 +121,15 @@ class AddAdmin extends Component {
           <div className="add-admin-container">
             <h2>Add all the Admin Details Below</h2>
             <form className="add-admin-form" onSubmit={this.addAdminData}>
+              <div className="add-admin-input-container">
+                <label htmlFor="name">Name:</label>
+                <input
+                  type="name"
+                  id="name"
+                  onChange={this.renderName}
+                  className="add-admin-input"
+                />
+              </div>
               <div className="add-admin-input-container">
                 <label htmlFor="email">Email:</label>
                 <input

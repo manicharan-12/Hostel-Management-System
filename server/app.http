@@ -14,9 +14,16 @@ Content-Type: application/json
 {
     "email":"admin2@anurag.edu.in",
     "password":"admin2",
-    "admin_type":"super admin",
-    "hostel_type":"both"
+    "admin_type":"admin",
+    "hostel_type":"both",
+    "name":"admin2"
 }
+
+###
+GET http://localhost:8000/admin-data
+
+###
+DELETE http://localhost:8000/delete/admin-data/d742f811-bc4a-4d50-a4a8-42104905b313
 
 
 ###
@@ -97,11 +104,11 @@ POST http://localhost:8000/student-data/add/student/boys
 Content-Type: application/json
 
 {
-    "name":"Mani Charan Reddy Gade",
-    "hallTicket_number":"21EG112B33",
-    "branch":"IT",
+    "name":"Mani Charan",
+    "hallTicket_number":"12EG12F69",
+    "branch":"SPECIAL",
     "current_year":3,
-    "room_no": 102,
+    "room_no": 101,
     "gender":"Male",
     "mobile_number":7013680808
 }
@@ -110,4 +117,4 @@ Content-Type: application/json
 GET http://localhost:8000/student-data/boys
 
 ###
-DELETE http://localhost:8000/student-data/delete/student/3f2ac41d-cf91-46da-b54c-2f47a6111834
+DELETE http://localhost:8000/student-data/delete/student/81381593-cebd-4dcc-8877-000df72d00d2

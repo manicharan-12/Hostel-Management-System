@@ -26,8 +26,14 @@ const HostelHome = (props) => {
               </div>
               <div className="content-container">
                 <div className="grid-box">
-                  <Link to="" className="box">
-                    <h4 className="content">Get Students Data</h4>
+                  <Link
+                    to={{
+                      pathname: `/student-data/${hostelType}`,
+                      state: { hostel_type: `${hostelType}` },
+                    }}
+                    className="box"
+                  >
+                    <h4 className="content">Students Data</h4>
                   </Link>
                   <Link to="" className="box">
                     <h4 className="content">Add Student Data</h4>
@@ -39,7 +45,7 @@ const HostelHome = (props) => {
                     }}
                     className="box"
                   >
-                    <h4 className="content">Get Room details</h4>
+                    <h4 className="content">Room details</h4>
                   </Link>
                   <Link
                     to={{
