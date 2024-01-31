@@ -1,3 +1,5 @@
+import { FiEdit } from "react-icons/fi";
+
 const StudentDetails = (props) => {
   const { details } = props;
   const {
@@ -28,6 +30,9 @@ const StudentDetails = (props) => {
         </div>
         <div className="col col-student" data-label="Room No">
           <p>{room_no}</p>
+        </div>
+        <div className="col col-student">
+          <FiEdit />
         </div>
       </li>
     </>

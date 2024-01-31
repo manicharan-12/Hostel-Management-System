@@ -104,9 +104,9 @@ POST http://localhost:8000/student-data/add/student/boys
 Content-Type: application/json
 
 {
-    "name":"Mani Charan",
-    "hallTicket_number":"12EG12F69",
-    "branch":"SPECIAL",
+    "name":"Sesh",
+    "hallTicket_number":"21EG112B33",
+    "branch":"IT",
     "current_year":3,
     "room_no": 101,
     "gender":"Male",

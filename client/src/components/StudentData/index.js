@@ -131,6 +131,7 @@ class StudentData extends Component {
             <div className="col col-student">
               <p>Room No</p>
             </div>
+            <div className="col col-student"></div>
           </li>
           {newStudentData.map((eachStudent) => (
             <StudentDetails key={eachStudent.id} details={eachStudent} />

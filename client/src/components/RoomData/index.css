@@ -149,9 +149,10 @@ h2 {
 
 .no-data-room-container {
   padding: 32px;
+  padding-top: 0px;
   hr {
-    border: 1.5px solid #000;
-    margin-top: 3px;
+    border: 1.2px solid rgb(201, 195, 195);
+    margin-top: 12px;
   }
 
   .filter-container {
