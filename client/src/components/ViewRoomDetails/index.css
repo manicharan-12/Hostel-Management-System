@@ -1,0 +1,15 @@
+.table-row-view-room {
+  background-color: #ffffff;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0px;
+}
+
+.table-row-view-room:nth-child(odd) {
+  background-color: #e9e9e9;
+}
+
+.table-row-view-room:last-child {
+  border-radius: 3px;
+}

@@ -1,0 +1,11 @@
+.edit-student-input {
+  border: 1px solid #000000;
+  padding: 3px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.edit-student-container {
+  padding-left: 13px;
+  padding-right: 13px;
+}

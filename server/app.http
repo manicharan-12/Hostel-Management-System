@@ -81,6 +81,9 @@ GET http://localhost:8000/room-data/boys/?room_type=&washroom_type=
 DELETE http://localhost:8000/room-data/delete/boys/21f989d6-744f-476d-bae5-52ba3573c8d4
 
 ###
+GET http://localhost:8000/room-data/student/f64cf883-522f-4611-8b8c-d7f4dd785dc0
+
+###
 Post http://localhost:8000/room-data/add/room/girls
 Content-Type: application/json
 

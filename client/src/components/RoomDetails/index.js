@@ -1,3 +1,4 @@
+import { withRouter } from "react-router-dom";
 import "./index.css";
 import { MdDelete } from "react-icons/md";
 
@@ -16,6 +17,14 @@ const RoomData = (props) => {
   const available_color = available_students > 0 ? "#22bb33" : "#bb2124";
   const present_color =
     present_students === total_students ? "#bb2124" : "#22bb33";
+
+  function getViewData(id) {
+    props.history.push({
+      pathname: `/room/student-data/${id}`,
+      state: { id: id },
+    });
+  }
+
   return (
     <li className="table-row">
       <div className="col col-1" data-label="Floor No">
@@ -48,7 +57,9 @@ const RoomData = (props) => {
         {washroom_type}
       </div>
       <div className="col col-8" data-label="">
-        <button className="room-view-button">View Details</button>
+        <button className="room-view-button" onClick={() => getViewData(id)}>
+          View Details
+        </button>
       </div>
       <div className="col col-9">
         <MdDelete
@@ -60,4 +71,4 @@ const RoomData = (props) => {
   );
 };
 
-export default RoomData;
+export default withRouter(RoomData);

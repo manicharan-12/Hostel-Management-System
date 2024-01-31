@@ -6,6 +6,7 @@ import { Puff } from "react-loader-spinner";
 import failure from "../Images/failure-image.png";
 import "./index.css";
 import StudentDetails from "../StudentDetails";
+import axios from "axios";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -43,6 +44,13 @@ class StudentData extends Component {
         studentData: data.student_data,
       });
     }
+  };
+
+  onClickDeleteStudent = async (id) => {
+    await axios.delete(
+      `http://localhost:8000/student-data/delete/student/${id}`,
+    );
+    this.getStudentData();
   };
 
   renderName = (event) => {
@@ -132,9 +140,14 @@ class StudentData extends Component {
               <p>Room No</p>
             </div>
             <div className="col col-student"></div>
+            <div className="col col-student"></div>
           </li>
           {newStudentData.map((eachStudent) => (
-            <StudentDetails key={eachStudent.id} details={eachStudent} />
+            <StudentDetails
+              key={eachStudent.id}
+              details={eachStudent}
+              onClickDeleteStudent={this.onClickDeleteStudent}
+            />
           ))}
         </ul>
       </>

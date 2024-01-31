@@ -1,0 +1,43 @@
+.responsive-table-view-room {
+  padding: 32px;
+}
+
+.table-header-view-room {
+  background-color: #2980b9;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-radius: 10px;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.col-view-room {
+  flex-basis: 20%;
+  text-align: center;
+}
+
+@media all and (max-width: 767px) {
+  .table-header-view-room {
+    display: none !important;
+  }
+  li {
+    display: block;
+  }
+  .col {
+    flex-basis: 100%;
+  }
+  .col {
+    display: flex;
+    padding: 10px 0;
+    &:before {
+      color: #6c7a89;
+      padding-right: 10px;
+      content: attr(data-label);
+      flex-basis: 50%;
+      text-align: right;
+    }
+  }
+}

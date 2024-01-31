@@ -243,9 +243,16 @@ app.delete(
   },
 );
 
+app.get("/room-data/student/:roomId", async (request, response) => {
+  const { roomId } = request.params;
+  const getStudentRoomData = `select * from student where room_id='${roomId}'`;
+  const studentRoomData = await db.all(getStudentRoomData);
+  response.send({ studentRoomData });
+});
+
 app.post("/student-data/add/student/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const {
+  let {
     name,
     hallTicket_number,
     branch,
@@ -254,6 +261,7 @@ app.post("/student-data/add/student/:hostelType", async (request, response) => {
     gender,
     mobile_number,
   } = request.body;
+  room_no = parseInt(room_no);
   const checkStudentQuery = `select * from student where hall_ticket_number='${hallTicket_number}'`;
   const checkStudent = await db.get(checkStudentQuery);
   if (checkStudent === undefined) {
@@ -326,9 +334,17 @@ app.post("/student-data/add/student/:hostelType", async (request, response) => {
 
 app.get("/student-data/:hostelType", async (request, response) => {
   const { hostelType } = request.params;
-  const getStudentDetailsQuery = `select * from student where hostel_type='${hostelType}'`;
+  const getStudentDetailsQuery = `select * from student where hostel_type='${hostelType}' order by room_no`;
   const getsStudentDetails = await db.all(getStudentDetailsQuery);
   response.send({ student_data: getsStudentDetails });
+});
+
+app.put("/update/student/data:hostelType", async (request, response) => {
+  const { name, hall_ticket_number, branch, current_year, mobile_number, id } =
+    request.body;
+  const updateStudentQuery = `update student set student_name='${name}',hall_ticket_number='${hall_ticket_number}', branch='${branch}', current_year='${current_year}', mobile_number=${mobile_number} where id='${id}'`;
+  await db.run(updateStudentQuery);
+  response.send("Success");
 });
 
 app.delete(

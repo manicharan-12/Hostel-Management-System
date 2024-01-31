@@ -13,6 +13,8 @@ import Access from "./components/Access";
 import AddAdmin from "./components/AddAdmin";
 import EditAdmin from "./components/EditAdmin";
 import StudentData from "./components/StudentData";
+import AddStudent from "./components/AddStudent";
+import ViewRoom from "./components/ViewRoom";
 
 class HostelTypeProvider extends Component {
   state = {
@@ -49,6 +51,11 @@ const App = () => {
         <ProtectedRoute exact path="/:hostelType" component={HostelHome} />
         <ProtectedRoute
           exact
+          path="/room/student-data/:id"
+          component={ViewRoom}
+        />
+        <ProtectedRoute
+          exact
           path="/floor-data/:hostelType"
           component={Floor}
         />
@@ -62,6 +69,11 @@ const App = () => {
           exact
           path="/student-data/:hostelType"
           component={StudentData}
+        />
+        <ProtectedRoute
+          exact
+          path="/add-student/:hostelType"
+          component={AddStudent}
         />
         <Redirect to="/" />
       </Switch>

@@ -14,8 +14,9 @@
 }
 
 .col-student {
-  flex-basis: 16.6666666667%;
+  flex-basis: 12.5%;
   text-align: center;
+  overflow-x: hidden;
 }
 
 .table-row-student {
