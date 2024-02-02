@@ -11,10 +11,11 @@ import Room from "./components/RoomData";
 import AddRoom from "./components/AddRoom";
 import Access from "./components/Access";
 import AddAdmin from "./components/AddAdmin";
-import EditAdmin from "./components/EditAdmin";
+import AdminData from "./components/AdminData";
 import StudentData from "./components/StudentData";
 import AddStudent from "./components/AddStudent";
 import ViewRoom from "./components/ViewRoom";
+import EditProfile from "./components/EditProfile";
 
 class HostelTypeProvider extends Component {
   state = {
@@ -45,7 +46,12 @@ const App = () => {
       <Switch>
         <Route exact path="/login/admin" component={Login} />
         <ProtectedRoute exact path="/" component={Home} />
-        <ProtectedRoute exact path="/edit-admin" component={EditAdmin} />
+        <ProtectedRoute
+          exact
+          path="/edit-profile/:id"
+          component={EditProfile}
+        />
+        <ProtectedRoute exact path="/admin/details" component={AdminData} />
         <ProtectedRoute exact path="/add-admin" component={AddAdmin} />
         <ProtectedRoute exact path="/no-access" component={Access} />
         <ProtectedRoute exact path="/:hostelType" component={HostelHome} />

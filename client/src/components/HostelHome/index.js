@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 const HostelHome = (props) => {
   let hostelType = props.match.params.hostelType;
   const role = Cookies.get("role");
+  const id = Cookies.get("id");
   return (
     <HostelType.Consumer>
       {(value) => {
@@ -70,13 +71,19 @@ const HostelHome = (props) => {
                     ""
                   )}
                   {role === "super admin" ? (
-                    <Link to="/edit-admin" className="box">
+                    <Link to="/admin/details" className="box">
                       <h4 className="content">Admin Details</h4>
                     </Link>
                   ) : (
                     ""
                   )}
-                  <Link to="" className="box">
+                  <Link
+                    to={{
+                      pathname: `/edit-profile/${id}`,
+                      state: { hostel_type: `${hostelType}` },
+                    }}
+                    className="box"
+                  >
                     <h4 className="content">Edit Profile</h4>
                   </Link>
                 </div>

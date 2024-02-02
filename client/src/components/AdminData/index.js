@@ -14,7 +14,7 @@ const apiStatusConstants = {
   inProgress: "IN_PROGRESS",
 };
 
-class EditAdmin extends Component {
+class AdminData extends Component {
   state = { apiStatus: apiStatusConstants.initial, adminList: [] };
 
   componentDidMount() {
@@ -71,7 +71,6 @@ class EditAdmin extends Component {
             <p>Name:</p>
           </div>
           <div className="col col-admin">
-            {" "}
             <p>Email</p>
           </div>
           <div className="col col-admin">
@@ -116,4 +115,4 @@ class EditAdmin extends Component {
   }
 }
 
-export default EditAdmin;
+export default AdminData;

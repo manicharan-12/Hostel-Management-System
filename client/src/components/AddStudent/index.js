@@ -4,7 +4,6 @@ import Back from "../Back";
 import "./index.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Bounce } from "react-toastify";
 
 class AddStudent extends Component {
   state = {

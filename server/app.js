@@ -101,6 +101,50 @@ app.get("/admin-data", async (request, response) => {
   response.send({ admin_list: getAdmin });
 });
 
+app.post("/user-data/admin", async (request, response) => {
+  const { email } = request.body;
+  const getAdminQuery = `select * from admin where email='${email}'`;
+  const getAdmin = await db.get(getAdminQuery);
+  response.send({ adminId: getAdmin.id });
+});
+
+app.get("/get-admin/:id", async (request, response) => {
+  const { id } = request.params;
+  const getAdminQuery = `select * from admin where id='${id}'`;
+  const getAdmin = await db.get(getAdminQuery);
+  response.send({ adminDetails: getAdmin });
+});
+
+app.post("/check-password/:id", async (request, response) => {
+  const { id } = request.params;
+  const { password } = request.body;
+  const getUserQuery = `select * from admin where id='${id}';`;
+  const getUser = await db.get(getUserQuery);
+  const checkPassword = await bcrypt.compare(password, getUser.password);
+  if (checkPassword === true) {
+    response.status(200);
+    response.send("Correct");
+  } else {
+    response.status(401);
+    response.send("Incorrect");
+  }
+});
+
+app.put("/update-details/:id", async (request, response) => {
+  const { name, password } = request.body;
+  const { id } = request.params;
+  if (password === "") {
+    const updateQuery = `update admin set name='${name}' where id='${id}'`;
+    db.run(updateQuery);
+    response.send("Success");
+  } else {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updateQuery = `update admin set name='${name}', password='${hashedPassword}' where id='${id}'`;
+    db.run(updateQuery);
+    response.send("Success");
+  }
+});
+
 app.delete("/delete/admin-data/:id", async (request, response) => {
   const { id } = request.params;
   const deleteAdminQuery = `delete from admin where id='${id}'`;

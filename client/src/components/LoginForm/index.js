@@ -7,11 +7,24 @@ import { Redirect, withRouter } from "react-router-dom";
 class Login extends Component {
   state = { email: "", password: "", role: "", errorMsg: "" };
 
-  onSubmitSuccess = (jwtToken) => {
+  onSubmitSuccess = async (jwtToken, email) => {
+    const url = `http://localhost:8000/user-data/admin`;
+    const postObject = { email };
+    const option = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postObject),
+    };
+    const response = await fetch(url, option);
+    const data = await response.json();
+    const id = data.adminId;
     const { role } = this.state;
     const { history } = this.props;
     Cookies.set("jwt_token", jwtToken, { expires: 1, path: "/" });
     Cookies.set("role", role, { expires: 1, path: "/" });
+    Cookies.set("id", id, { expires: 1, path: "/" });
     if (role === "super admin" || role === "admin") {
       history.replace("/");
     }
@@ -32,7 +45,7 @@ class Login extends Component {
     const response = await fetch(url, option);
     const data = await response.json();
     if (response.ok === true) {
-      this.onSubmitSuccess(data.jwt_token);
+      this.onSubmitSuccess(data.jwt_token, email);
     } else {
       this.setState({ errorMsg: data.error_msg });
     }
