@@ -53,6 +53,16 @@ class StudentData extends Component {
     this.getStudentData();
   };
 
+  onClickUpdateStudentData = async (updatedData, id) => {
+    const { hostelType } = this.state;
+    await axios.put(
+      `http://localhost:8000/update/student/data/${hostelType}`,
+      updatedData,
+    );
+
+    this.getStudentData();
+  };
+
   renderName = (event) => {
     this.setState({ name: event.target.value });
   };
@@ -147,6 +157,7 @@ class StudentData extends Component {
               key={eachStudent.id}
               details={eachStudent}
               onClickDeleteStudent={this.onClickDeleteStudent}
+              onClickUpdateStudentData={this.onClickUpdateStudentData}
             />
           ))}
         </ul>

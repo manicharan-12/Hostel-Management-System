@@ -51,3 +51,7 @@
   margin-right: 2px;
   margin-left: 16px;
 }
+
+.Toastify__progress-bar {
+  color: #22bb33;
+}

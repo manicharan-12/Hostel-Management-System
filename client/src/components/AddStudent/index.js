@@ -2,6 +2,9 @@ import { Component } from "react";
 import Header from "../Header";
 import Back from "../Back";
 import "./index.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce } from "react-toastify";
 
 class AddStudent extends Component {
   state = {
@@ -9,7 +12,7 @@ class AddStudent extends Component {
     hallTicket_number: "",
     branch: "",
     current_year: "",
-    room_no: null,
+    room_no: "",
     gender: "",
     mobile_number: "",
     error_msg: "",
@@ -62,6 +65,26 @@ class AddStudent extends Component {
         const data = await response.json();
         this.setState({ error_msg: data.error_msg });
       } else {
+        this.setState({
+          name: "",
+          hallTicket_number: "",
+          branch: "",
+          current_year: "",
+          room_no: "",
+          gender: "",
+          mobile_number: "",
+          error_msg: "",
+        });
+        toast.success("Student Added Successfully", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
   };
@@ -95,7 +118,15 @@ class AddStudent extends Component {
   };
 
   renderForm = () => {
-    const { error_msg, hostelType } = this.state;
+    const {
+      error_msg,
+      name,
+      hallTicket_number,
+      branch,
+      current_year,
+      room_no,
+      mobile_number,
+    } = this.state;
     return (
       <div className="add-student-main-container">
         <div className="add-student-container">
@@ -108,6 +139,7 @@ class AddStudent extends Component {
                 className="add-input-student"
                 id="name"
                 onChange={this.renderName}
+                value={name}
               />
             </div>
             <div className="add-student-input-container">
@@ -117,6 +149,7 @@ class AddStudent extends Component {
                 className="add-input-student"
                 id="hall-ticket"
                 onChange={this.renderHallTicketNumber}
+                value={hallTicket_number}
               />
             </div>
             <div className="add-student-input-container">
@@ -126,6 +159,7 @@ class AddStudent extends Component {
                 className="add-input-student"
                 id="branch"
                 onChange={this.renderBranch}
+                value={branch}
               />
             </div>
             <div className="add-student-input-container">
@@ -135,15 +169,17 @@ class AddStudent extends Component {
                 className="add-input-student"
                 id="year"
                 onChange={this.renderYear}
+                value={current_year}
               />
             </div>
             <div className="add-student-input-container">
               <label htmlFor="room-no">Room No:</label>
               <input
-                type="number"
+                type="text"
                 className="add-input-student"
                 id="room-no"
                 onChange={this.renderRoomNo}
+                value={room_no}
               />
             </div>
             <div className="add-student-input-container">
@@ -179,9 +215,10 @@ class AddStudent extends Component {
             <div className="add-student-input-container">
               <label>Mobile Number:</label>
               <input
-                type="number"
+                type="text"
                 className="add-input-student"
                 onChange={this.renderMobileNumber}
+                value={mobile_number}
               />
             </div>
             <div>
@@ -202,6 +239,18 @@ class AddStudent extends Component {
         <Header />
         <Back />
         {this.renderForm()}
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </div>
     );
   }

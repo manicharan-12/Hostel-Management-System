@@ -33,7 +33,27 @@ class StudentDetails extends Component {
   };
 
   cancelEdit = () => {
+    const { onClickUpdateStudentData, details } = this.props;
+    const { id } = details;
+    const {
+      name,
+      hall_ticket_number,
+      branch,
+      current_year,
+      mobile_number,
+      room_no,
+    } = this.state;
     this.setState({ isEditClicked: false });
+    const updatedData = {
+      name,
+      hall_ticket_number,
+      branch,
+      current_year,
+      mobile_number,
+      room_no,
+      id,
+    };
+    onClickUpdateStudentData(updatedData);
   };
 
   onChangeName = (event) => {

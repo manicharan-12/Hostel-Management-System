@@ -339,7 +339,7 @@ app.get("/student-data/:hostelType", async (request, response) => {
   response.send({ student_data: getsStudentDetails });
 });
 
-app.put("/update/student/data:hostelType", async (request, response) => {
+app.put("/update/student/data/:hostelType", async (request, response) => {
   const { name, hall_ticket_number, branch, current_year, mobile_number, id } =
     request.body;
   const updateStudentQuery = `update student set student_name='${name}',hall_ticket_number='${hall_ticket_number}', branch='${branch}', current_year='${current_year}', mobile_number=${mobile_number} where id='${id}'`;
