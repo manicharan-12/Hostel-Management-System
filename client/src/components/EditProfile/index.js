@@ -125,7 +125,6 @@ class EditProfile extends Component {
         }
       })
       .catch((error) => {
-        console.log(error);
         this.setState({ checkPasswordStatus: apiStatusConstants.failure });
       });
   };
@@ -201,8 +200,24 @@ class EditProfile extends Component {
       newPassword,
       confirmPassword,
     } = this.state;
-    const bgColor = isDisabled === true ? { background: "#EBEBE4" } : {};
-    const bgColor2 = isDisabled === false ? { background: "#EBEBE4" } : {};
+    const bgColor =
+      isDisabled === true
+        ? {
+            background: "#EBEBE4",
+            color: "#C6C6C6",
+            borderColor: "rgba(118, 118, 118, 0.3)",
+            cursor: "not-allowed",
+          }
+        : {};
+    const bgColor2 =
+      isDisabled === false
+        ? {
+            background: "#EBEBE4",
+            color: "#C6C6C6",
+            borderColor: "rgba(118, 118, 118, 0.3)",
+            cursor: "not-allowed",
+          }
+        : {};
     return (
       <div className="edit-profile-main-container">
         <div className="edit-profile-container">
@@ -214,7 +229,12 @@ class EditProfile extends Component {
                 type="text"
                 disabled
                 className="edit-profile-input"
-                style={{ background: "#EBEBE4" }}
+                style={{
+                  background: "#EBEBE4",
+                  color: "#C6C6C6",
+                  borderColor: "rgba(118, 118, 118, 0.3)",
+                  cursor: "not-allowed",
+                }}
                 value={email}
               />
             </div>

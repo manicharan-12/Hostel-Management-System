@@ -2,6 +2,8 @@ import { Component } from "react";
 import Header from "../Header";
 import "./index.css";
 import Back from "../Back";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class AddRoom extends Component {
   state = {
@@ -60,9 +62,25 @@ class AddRoom extends Component {
       };
       const response = await fetch(api, option);
       if (response.ok === true) {
-        this.props.history.replace({
-          pathname: `/room-data/${hostelType}`,
-          state: { hostel_type: `${hostelType}` },
+        toast.success("Room Created Successfully", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        this.setState({
+          floorNo: "",
+          roomNo: "",
+          total: "",
+          roomType: "AC",
+          washroomType: "Attached",
+          hostelType: "",
+          errorMsg: "",
+          errorStatus: false,
         });
       } else {
         const data = await response.json();
@@ -72,7 +90,15 @@ class AddRoom extends Component {
   };
 
   render() {
-    const { errorStatus, errorMsg } = this.state;
+    const {
+      errorStatus,
+      errorMsg,
+      floorNo,
+      roomNo,
+      total,
+      roomType,
+      washroomType,
+    } = this.state;
     return (
       <div>
         <Header />
@@ -84,26 +110,38 @@ class AddRoom extends Component {
             <form className="add-room-form" onSubmit={this.addRoom}>
               <div className="add-room-data">
                 <label>Floor No</label>
-                <input type="text" onChange={this.renderFloorNo} />
+                <input
+                  type="text"
+                  onChange={this.renderFloorNo}
+                  value={floorNo}
+                />
               </div>
               <div className="add-room-data">
                 <label>Room No</label>
-                <input type="text" onChange={this.renderRoomNo} />
+                <input
+                  type="text"
+                  onChange={this.renderRoomNo}
+                  value={roomNo}
+                />
               </div>
               <div className="add-room-data">
                 <label>Student Capacity</label>
-                <input type="text" onChange={this.renderCapacity} />
+                <input
+                  type="text"
+                  onChange={this.renderCapacity}
+                  value={total}
+                />
               </div>
               <div className="add-room-data">
                 <label>Room Type</label>
-                <select onChange={this.renderRoomType}>
+                <select onChange={this.renderRoomType} value={roomType}>
                   <option value="AC">AC</option>
                   <option value="Non-AC">Non-AC</option>
                 </select>
               </div>
               <div className="add-room-data">
                 <label>Washroom Type</label>
-                <select onChange={this.renderWashroomType}>
+                <select onChange={this.renderWashroomType} value={washroomType}>
                   <option value="Attached">Attached</option>
                   <option value="Non-Attached">Non-Attached</option>
                 </select>
@@ -134,6 +172,18 @@ class AddRoom extends Component {
             </form>
           </div>
         </div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </div>
     );
   }

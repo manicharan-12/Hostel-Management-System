@@ -1,0 +1,67 @@
+.update-password-main-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.update-password-container {
+  box-shadow: 0px 0px 29px 2px rgba(0, 0, 0, 0.75);
+  padding: 18px;
+  border-radius: 8px;
+  width: fit-content;
+  width: 40%;
+}
+
+.update-password-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.update-password-input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.update-password-input {
+  border: 1px solid #000000;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.update-password-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.update-password-button {
+  padding: 12px;
+  background: #4373e6;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+}
+
+.cancel-button {
+  background: gray;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
+}

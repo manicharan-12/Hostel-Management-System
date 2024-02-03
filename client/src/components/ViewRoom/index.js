@@ -60,7 +60,6 @@ class ViewRoom extends Component {
   renderSuccessView = () => {
     const { studentData } = this.state;
     const length = studentData.length;
-    console.log(studentData);
     return (
       <>
         {length > 0 ? (

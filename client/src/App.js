@@ -16,6 +16,7 @@ import StudentData from "./components/StudentData";
 import AddStudent from "./components/AddStudent";
 import ViewRoom from "./components/ViewRoom";
 import EditProfile from "./components/EditProfile";
+import updatePassword from "./components/UpdatePassword";
 
 class HostelTypeProvider extends Component {
   state = {
@@ -80,6 +81,11 @@ const App = () => {
           exact
           path="/add-student/:hostelType"
           component={AddStudent}
+        />
+        <ProtectedRoute
+          exact
+          path="/check-password/:id"
+          component={updatePassword}
         />
         <Redirect to="/" />
       </Switch>

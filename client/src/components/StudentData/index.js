@@ -7,6 +7,7 @@ import failure from "../Images/failure-image.png";
 import "./index.css";
 import StudentDetails from "../StudentDetails";
 import axios from "axios";
+import noData from "../Images/no data.png";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -89,6 +90,7 @@ class StudentData extends Component {
 
   renderSuccessView = () => {
     const { studentData, name } = this.state;
+    const length = studentData.length;
     let newStudentData;
 
     newStudentData = studentData.filter((eachStudent) => {
@@ -104,7 +106,6 @@ class StudentData extends Component {
           .toUpperCase()
           .includes(name.toUpperCase()) === true
       ) {
-        console.log("Hi");
         return eachStudent.hall_ticket_number
           .toUpperCase()
           .includes(name.toUpperCase());
@@ -116,51 +117,59 @@ class StudentData extends Component {
     });
     return (
       <>
-        <div className="header-student">
-          <h1>Student Detail</h1>
-          <div className="student-search-container">
-            <h3 style={{ marginRight: "12px" }}>Search By</h3>
-            <input
-              type="text"
-              className="search-student"
-              placeholder="Name or Hall Ticket Number"
-              onChange={this.renderName}
-            />
+        {length > 0 ? (
+          <>
+            <div className="header-student">
+              <h1>Student Detail</h1>
+              <div className="student-search-container">
+                <h3 style={{ marginRight: "12px" }}>Search By</h3>
+                <input
+                  type="text"
+                  className="search-student"
+                  placeholder="Name or Hall Ticket Number"
+                  onChange={this.renderName}
+                />
+              </div>
+            </div>
+            <ul className="responsive-table-student">
+              <li className="table-header-student">
+                <div className="col col-student">
+                  <p>Name</p>
+                </div>
+                <div className="col col-student">
+                  <p>Hall Ticket</p> <p>Number</p>
+                </div>
+                <div className="col col-student">
+                  <p>Branch</p>
+                </div>
+                <div className="col col-student">
+                  <p>Year</p>
+                </div>
+                <div className="col col-student">
+                  <p>Mobile</p>
+                  <p>Number</p>
+                </div>
+                <div className="col col-student">
+                  <p>Room No</p>
+                </div>
+                <div className="col col-student"></div>
+                <div className="col col-student"></div>
+              </li>
+              {newStudentData.map((eachStudent) => (
+                <StudentDetails
+                  key={eachStudent.id}
+                  details={eachStudent}
+                  onClickDeleteStudent={this.onClickDeleteStudent}
+                  onClickUpdateStudentData={this.onClickUpdateStudentData}
+                />
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div className="no-data-container">
+            <img src={noData} alt="noData" className="no-data-image" />
           </div>
-        </div>
-        <ul className="responsive-table-student">
-          <li className="table-header-student">
-            <div className="col col-student">
-              <p>Name</p>
-            </div>
-            <div className="col col-student">
-              <p>Hall Ticket</p> <p>Number</p>
-            </div>
-            <div className="col col-student">
-              <p>Branch</p>
-            </div>
-            <div className="col col-student">
-              <p>Year</p>
-            </div>
-            <div className="col col-student">
-              <p>Mobile</p>
-              <p>Number</p>
-            </div>
-            <div className="col col-student">
-              <p>Room No</p>
-            </div>
-            <div className="col col-student"></div>
-            <div className="col col-student"></div>
-          </li>
-          {newStudentData.map((eachStudent) => (
-            <StudentDetails
-              key={eachStudent.id}
-              details={eachStudent}
-              onClickDeleteStudent={this.onClickDeleteStudent}
-              onClickUpdateStudentData={this.onClickUpdateStudentData}
-            />
-          ))}
-        </ul>
+        )}
       </>
     );
   };

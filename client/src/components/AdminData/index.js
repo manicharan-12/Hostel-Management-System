@@ -41,6 +41,13 @@ class AdminData extends Component {
     this.getAdminData();
   };
 
+  onClickUpdatePassword = (id) => {
+    this.props.history.push({
+      pathname: `/check-password/${id}`,
+      state: { id: id },
+    });
+  };
+
   renderLoadingView = () => {
     return (
       <div className="loader-container">
@@ -76,6 +83,10 @@ class AdminData extends Component {
           <div className="col col-admin">
             <p>Role</p>
           </div>
+
+          <div className="col col-admin">
+            <p>Hostel Type</p>
+          </div>
           <div className="col col-admin"></div>
           <div className="col col-admin"></div>
         </li>
@@ -84,6 +95,7 @@ class AdminData extends Component {
             key={eachAdmin.id}
             details={eachAdmin}
             onClickDeleteAdmin={this.onClickDeleteAdmin}
+            onClickUpdatePassword={this.onClickUpdatePassword}
           />
         ))}
       </div>

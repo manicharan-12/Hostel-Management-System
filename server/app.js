@@ -75,7 +75,7 @@ app.post("/login/main-admin/", async (request, response) => {
   } else {
     response.status(401);
     response.send({
-      error_msg: "Invalid Email Id or Invalid Role. Please Check to Continue",
+      error_msg: "Invalid Email Id. Please Check to Continue",
     });
   }
 });
@@ -105,7 +105,7 @@ app.post("/user-data/admin", async (request, response) => {
   const { email } = request.body;
   const getAdminQuery = `select * from admin where email='${email}'`;
   const getAdmin = await db.get(getAdminQuery);
-  response.send({ adminId: getAdmin.id });
+  response.send({ adminId: getAdmin.id, hostel_type: getAdmin.hostel_type });
 });
 
 app.get("/get-admin/:id", async (request, response) => {
@@ -135,6 +135,11 @@ app.put("/update-details/:id", async (request, response) => {
   const { id } = request.params;
   if (password === "") {
     const updateQuery = `update admin set name='${name}' where id='${id}'`;
+    db.run(updateQuery);
+    response.send("Success");
+  } else if (name === "") {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updateQuery = `update admin set password='${hashedPassword}' where id='${id}'`;
     db.run(updateQuery);
     response.send("Success");
   } else {

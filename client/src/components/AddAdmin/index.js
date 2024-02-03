@@ -3,6 +3,8 @@ import { Component } from "react";
 import Header from "../Header";
 import Back from "../Back";
 import "./index.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class AddAdmin extends Component {
   state = {
@@ -19,7 +21,6 @@ class AddAdmin extends Component {
   addAdminData = async (event) => {
     event.preventDefault();
     const { email, password, adminType, hostel_type, name } = this.state;
-    console.log(email, password, adminType, hostel_type);
     if (email === "" || password === "" || adminType === "" || name === "") {
       this.setState({
         error_msg: "All fields need to be filled",
@@ -50,7 +51,27 @@ class AddAdmin extends Component {
           };
           const response = await fetch(api, option);
           if (response.ok === true) {
-            this.props.history.replace({ pathname: "/boys" });
+            this.setState({
+              isDisabled: true,
+              email: "",
+              password: "",
+              adminType: "",
+              hostel_type: "both",
+              error_msg: "",
+              isError: false,
+              name: "",
+            });
+
+            toast.success("Admin Created", {
+              position: "bottom-center",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           } else {
             const data = await response.json();
             this.setState({ errorStatus: true, errorMsg: data.error_msg });
@@ -74,7 +95,27 @@ class AddAdmin extends Component {
         };
         const response = await fetch(api, option);
         if (response.ok === true) {
-          this.props.history.replace({ pathname: "/boys" });
+          this.setState({
+            isDisabled: true,
+            email: "",
+            password: "",
+            adminType: "",
+            hostel_type: "both",
+            error_msg: "",
+            isError: false,
+            name: "",
+          });
+
+          toast.success("Admin Created", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         } else {
           const data = await response.json();
           this.setState({ errorStatus: true, errorMsg: data.error_msg });
@@ -111,7 +152,8 @@ class AddAdmin extends Component {
   };
 
   render() {
-    const { isDisabled, error_msg } = this.state;
+    const { isDisabled, error_msg, email, password, name, adminType } =
+      this.state;
     const cursor = isDisabled ? "not-allowed" : "";
     return (
       <>
@@ -128,6 +170,7 @@ class AddAdmin extends Component {
                   id="name"
                   onChange={this.renderName}
                   className="add-admin-input"
+                  value={name}
                 />
               </div>
               <div className="add-admin-input-container">
@@ -137,6 +180,7 @@ class AddAdmin extends Component {
                   className="add-admin-input"
                   id="email"
                   onChange={this.renderEmail}
+                  value={email}
                 />
               </div>
               <div className="add-admin-input-container">
@@ -146,6 +190,7 @@ class AddAdmin extends Component {
                   className="add-admin-input"
                   id="password"
                   onChange={this.renderPassword}
+                  value={password}
                 />
               </div>
               <div className="add-admin-input-container">
@@ -154,6 +199,7 @@ class AddAdmin extends Component {
                   className="add-admin-input"
                   onChange={this.renderAdminType}
                   id="adminType"
+                  value={adminType}
                 >
                   <option>Choose the admin type</option>
                   <option value="super admin">Super Admin</option>
@@ -196,6 +242,18 @@ class AddAdmin extends Component {
             </form>
           </div>
         </div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </>
     );
   }

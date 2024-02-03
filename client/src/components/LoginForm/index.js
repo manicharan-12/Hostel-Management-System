@@ -20,11 +20,13 @@ class Login extends Component {
     const response = await fetch(url, option);
     const data = await response.json();
     const id = data.adminId;
+    const hostel_type = data.hostel_type;
     const { role } = this.state;
     const { history } = this.props;
     Cookies.set("jwt_token", jwtToken, { expires: 1, path: "/" });
     Cookies.set("role", role, { expires: 1, path: "/" });
     Cookies.set("id", id, { expires: 1, path: "/" });
+    Cookies.set("hostel_type", hostel_type, { expires: 1, path: "/" });
     if (role === "super admin" || role === "admin") {
       history.replace("/");
     }
@@ -33,21 +35,26 @@ class Login extends Component {
   submitField = async (event) => {
     event.preventDefault();
     const { email, password, role } = this.state;
-    const url = "http://localhost:8000/login/main-admin/";
-    const postObject = { email: email, password: password, role: role };
-    const option = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postObject),
-    };
-    const response = await fetch(url, option);
-    const data = await response.json();
-    if (response.ok === true) {
-      this.onSubmitSuccess(data.jwt_token, email);
+    if (role === "super admin" || role === "admin") {
+      const url = "http://localhost:8000/login/main-admin/";
+      const postObject = { email: email, password: password, role: role };
+      const option = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postObject),
+      };
+      const response = await fetch(url, option);
+      const data = await response.json();
+      if (response.ok === true) {
+        this.onSubmitSuccess(data.jwt_token, email);
+      } else {
+        this.setState({ errorMsg: data.error_msg });
+      }
+    } else if (role === "student") {
     } else {
-      this.setState({ errorMsg: data.error_msg });
+      this.set({ errorMsg: "Invalid Student Role. Please check to continue" });
     }
   };
 
