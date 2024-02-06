@@ -96,7 +96,7 @@ app.post("/add/admin/data", async (request, response) => {
 });
 
 app.get("/admin-data", async (request, response) => {
-  const getAdminQuery = `select * from admin where email !='admin1@anurag.edu.in' order by role desc`;
+  const getAdminQuery = `select * from admin order by role desc, name asc`;
   const getAdmin = await db.all(getAdminQuery);
   response.send({ admin_list: getAdmin });
 });

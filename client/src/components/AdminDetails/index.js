@@ -1,9 +1,13 @@
 import { MdDelete } from "react-icons/md";
 import "./index.css";
+import Cookies from "js-cookie";
 
 const AdminDetails = (props) => {
   const { details, onClickDeleteAdmin, onClickUpdatePassword } = props;
   const { name, id, email, role, hostel_type } = details;
+  const cookieId = Cookies.get("id");
+  const isDisabled = id === cookieId;
+  const isDisabledStyle = { color: "gary", cursor: "not-allowed" };
   return (
     <div>
       <li className="table-row-admin">
@@ -31,7 +35,12 @@ const AdminDetails = (props) => {
         <div className="col col-admin">
           <MdDelete
             className="delete-icon"
-            onClick={() => onClickDeleteAdmin(id)}
+            onClick={() => {
+              if (!isDisabled) {
+                onClickDeleteAdmin(id);
+              }
+            }}
+            style={isDisabled ? { ...isDisabledStyle } : {}}
           />
         </div>
       </li>

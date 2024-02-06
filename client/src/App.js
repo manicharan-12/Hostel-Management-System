@@ -45,7 +45,7 @@ const App = () => {
   return (
     <HostelTypeProvider>
       <Switch>
-        <Route exact path="/login/admin" component={Login} />
+        <Route exact path="/hostel/login" component={Login} />
         <ProtectedRoute exact path="/" component={Home} />
         <ProtectedRoute
           exact

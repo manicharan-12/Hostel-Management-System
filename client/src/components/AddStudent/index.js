@@ -194,7 +194,6 @@ class AddStudent extends Component {
                   onChange={this.renderGender}
                 />
                 <label htmlFor="male" style={{ cursor: "pointer" }}>
-                  {" "}
                   Male
                 </label>
                 <input
