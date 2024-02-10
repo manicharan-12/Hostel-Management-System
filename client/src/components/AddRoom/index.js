@@ -78,7 +78,6 @@ class AddRoom extends Component {
           total: "",
           roomType: "AC",
           washroomType: "Attached",
-          hostelType: "",
           errorMsg: "",
           errorStatus: false,
         });

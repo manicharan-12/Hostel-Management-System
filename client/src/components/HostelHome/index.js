@@ -36,15 +36,19 @@ const HostelHome = (props) => {
                   >
                     <h4 className="content">Students Data</h4>
                   </Link>
-                  <Link
-                    to={{
-                      pathname: `/add-student/${hostelType}`,
-                      state: { hostel_type: `${hostelType}` },
-                    }}
-                    className="box"
-                  >
-                    <h4 className="content">Add Student</h4>
-                  </Link>
+                  {role === "super admin" ? (
+                    <Link
+                      to={{
+                        pathname: `/add-student/${hostelType}`,
+                        state: { hostel_type: `${hostelType}` },
+                      }}
+                      className="box"
+                    >
+                      <h4 className="content">Register Student</h4>
+                    </Link>
+                  ) : (
+                    ""
+                  )}
                   <Link
                     to={{
                       pathname: `/room-data/${hostelType}`,

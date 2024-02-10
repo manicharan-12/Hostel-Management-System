@@ -8,6 +8,7 @@ import "./index.css";
 import StudentDetails from "../StudentDetails";
 import axios from "axios";
 import noData from "../Images/no data.png";
+import Cookies from "js-cookie";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -92,6 +93,7 @@ class StudentData extends Component {
     const { studentData, name } = this.state;
     const length = studentData.length;
     let newStudentData;
+    const role=Cookies.get("role")
 
     newStudentData = studentData.filter((eachStudent) => {
       if (
@@ -168,6 +170,8 @@ class StudentData extends Component {
         ) : (
           <div className="no-data-container">
             <img src={noData} alt="noData" className="no-data-image" />
+            {role==='super admin'?<h2>No Data Available. Please do Register a Student</h2>:<h2>No Data Available</h2>}
+            
           </div>
         )}
       </>

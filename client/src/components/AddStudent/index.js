@@ -11,11 +11,12 @@ class AddStudent extends Component {
     hallTicket_number: "",
     branch: "",
     current_year: "",
-    room_no: "",
     gender: "",
     mobile_number: "",
     error_msg: "",
     hostelType: this.props.match.params.hostelType,
+    fees: "",
+    paid: "",
   };
 
   addStudentData = async (event) => {
@@ -25,32 +26,35 @@ class AddStudent extends Component {
       hallTicket_number,
       branch,
       current_year,
-      room_no,
       gender,
       mobile_number,
       hostelType,
+      fees,
+      paid,
     } = this.state;
     if (
       name === "" ||
       hallTicket_number === "" ||
       branch === "" ||
       current_year === "" ||
-      room_no === null ||
       gender === "" ||
-      mobile_number === ""
+      mobile_number === "" ||
+      fees === "" ||
+      paid === ""
     ) {
       this.setState({ error_msg: "All Fields Need to be Filled" });
     } else {
       this.setState({ error_msg: "" });
-      const api = `http://localhost:8000/student-data/add/student/${hostelType}`;
+      const api = `http://localhost:8000/register/student/${hostelType}`;
       const postStudent = {
         name,
         hallTicket_number,
         branch,
         current_year,
-        room_no,
         gender,
         mobile_number,
+        total_amount: fees,
+        amount_paid: paid,
       };
       const option = {
         method: "POST",
@@ -72,6 +76,8 @@ class AddStudent extends Component {
           room_no: "",
           gender: "",
           mobile_number: "",
+          fees: "",
+          paid: "",
           error_msg: "",
         });
         toast.success("Student Added Successfully", {
@@ -93,7 +99,7 @@ class AddStudent extends Component {
   };
 
   renderHallTicketNumber = (event) => {
-    this.setState({ hallTicket_number: event.target.value });
+    this.setState({ hallTicket_number: event.target.value.toUpperCase() });
   };
 
   renderBranch = (event) => {
@@ -104,16 +110,20 @@ class AddStudent extends Component {
     this.setState({ current_year: event.target.value });
   };
 
-  renderRoomNo = (event) => {
-    this.setState({ room_no: event.target.value });
-  };
-
   renderGender = (event) => {
     this.setState({ gender: event.target.value });
   };
 
   renderMobileNumber = (event) => {
     this.setState({ mobile_number: event.target.value });
+  };
+
+  renderFees = (event) => {
+    this.setState({ fees: event.target.value });
+  };
+
+  renderPaid = (event) => {
+    this.setState({ paid: event.target.value });
   };
 
   renderForm = () => {
@@ -123,8 +133,9 @@ class AddStudent extends Component {
       hallTicket_number,
       branch,
       current_year,
-      room_no,
       mobile_number,
+      fees,
+      paid,
     } = this.state;
     return (
       <div className="add-student-main-container">
@@ -149,36 +160,6 @@ class AddStudent extends Component {
                 id="hall-ticket"
                 onChange={this.renderHallTicketNumber}
                 value={hallTicket_number}
-              />
-            </div>
-            <div className="add-student-input-container">
-              <label htmlFor="branch">Branch:</label>
-              <input
-                type="text"
-                className="add-input-student"
-                id="branch"
-                onChange={this.renderBranch}
-                value={branch}
-              />
-            </div>
-            <div className="add-student-input-container">
-              <label htmlFor="year">Current Year:</label>
-              <input
-                type="text"
-                className="add-input-student"
-                id="year"
-                onChange={this.renderYear}
-                value={current_year}
-              />
-            </div>
-            <div className="add-student-input-container">
-              <label htmlFor="room-no">Room No:</label>
-              <input
-                type="text"
-                className="add-input-student"
-                id="room-no"
-                onChange={this.renderRoomNo}
-                value={room_no}
               />
             </div>
             <div className="add-student-input-container">
@@ -211,12 +192,50 @@ class AddStudent extends Component {
               </div>
             </div>
             <div className="add-student-input-container">
+              <label htmlFor="branch">Branch:</label>
+              <input
+                type="text"
+                className="add-input-student"
+                id="branch"
+                onChange={this.renderBranch}
+                value={branch}
+              />
+            </div>
+            <div className="add-student-input-container">
+              <label htmlFor="year">Current Year:</label>
+              <input
+                type="text"
+                className="add-input-student"
+                id="year"
+                onChange={this.renderYear}
+                value={current_year}
+              />
+            </div>
+            <div className="add-student-input-container">
               <label>Mobile Number:</label>
               <input
                 type="text"
                 className="add-input-student"
                 onChange={this.renderMobileNumber}
                 value={mobile_number}
+              />
+            </div>
+            <div className="add-student-input-container">
+              <label>Fees:</label>
+              <input
+                type="text"
+                className="add-input-student"
+                onChange={this.renderFees}
+                value={fees}
+              />
+            </div>
+            <div className="add-student-input-container">
+              <label>Amount Paid:</label>
+              <input
+                type="text"
+                className="add-input-student"
+                onChange={this.renderPaid}
+                value={paid}
               />
             </div>
             <div>

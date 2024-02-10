@@ -15,8 +15,26 @@
 }
 
 .col-view-room {
-  flex-basis: 20%;
+  flex-basis: 16.6666666667%;
   text-align: center;
+}
+
+.add-student-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5%;
+}
+
+.add-student-button {
+  padding: 12px;
+  background: #4373e6;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: none;
 }
 
 @media all and (max-width: 767px) {

@@ -108,7 +108,7 @@ Content-Type: application/json
 
 {
     "name":"Sesh",
-    "hallTicket_number":"21EG112B33",
+    "hallTicket_number":"21EG112B31",
     "branch":"IT",
     "current_year":3,
     "room_no": 101,
@@ -117,7 +117,22 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8000/register/student/boys
+Content-Type: application/json
+
+{
+    "name":"Mani Charan Reddy",
+    "hallTicket_number":"21EG112B33",
+    "branch":"IT",
+    "current_year":3,
+    "gender":"Male",
+    "mobile_number":7013680808,
+    "total_amount":100000,
+    "amount_paid":99000
+}
+
+###
 GET http://localhost:8000/student-data/boys
 
 ###
-DELETE http://localhost:8000/student-data/delete/student/81381593-cebd-4dcc-8877-000df72d00d2
+DELETE http://localhost:8000/student-data/delete/student/18f7a078-4d2b-4ea8-95e3-fb28a51f1612

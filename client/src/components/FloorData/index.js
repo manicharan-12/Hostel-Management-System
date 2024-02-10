@@ -125,6 +125,7 @@ class Floor extends Component {
           <div>
             <div className="no-data-container">
               <img src={noData} alt="noData" className="no-data-image" />
+              <h2>No Floors Available</h2>
             </div>
           </div>
         )}

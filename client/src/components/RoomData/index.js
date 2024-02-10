@@ -192,9 +192,9 @@ class Room extends Component {
                 <option value="Non-Attached">Non-Attached</option>
               </select>
             </div>
-            <hr />
             <div className="no-data-container">
               <img src={noData} alt="noData" className="no-data-image" />
+              <h2>No Rooms are available! Create a Room</h2>
             </div>
             <div className="add-room-button-container">
               <Link
