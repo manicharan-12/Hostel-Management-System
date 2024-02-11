@@ -19,20 +19,65 @@ class AddAdmin extends Component {
   };
 
   addAdminData = async (event) => {
-    event.preventDefault();
-    const { email, password, adminType, hostel_type, name } = this.state;
-    if (email === "" || password === "" || adminType === "" || name === "") {
-      this.setState({
-        error_msg: "All fields need to be filled",
-        isError: true,
-      });
-    } else {
-      if (adminType === "admin") {
-        if (hostel_type === "both") {
-          this.setState({
-            error_msg: "Please select the Hostel Type",
-            isError: true,
-          });
+    try {
+      event.preventDefault();
+      const { email, password, adminType, hostel_type, name } = this.state;
+      if (email === "" || password === "" || adminType === "" || name === "") {
+        this.setState({
+          error_msg: "All fields need to be filled",
+          isError: true,
+        });
+      } else {
+        if (adminType === "admin") {
+          if (hostel_type === "both") {
+            this.setState({
+              error_msg: "Please select the Hostel Type",
+              isError: true,
+            });
+          } else {
+            const api = `http://localhost:8000/add/admin/data`;
+            const postAdmin = {
+              email,
+              password,
+              admin_type: adminType,
+              hostel_type,
+              name,
+            };
+            const option = {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(postAdmin),
+            };
+            const response = await fetch(api, option);
+            if (response.ok === true) {
+              this.setState({
+                isDisabled: true,
+                email: "",
+                password: "",
+                adminType: "",
+                hostel_type: "both",
+                error_msg: "",
+                isError: false,
+                name: "",
+              });
+
+              toast.success("Admin Created", {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            } else {
+              const data = await response.json();
+              this.setState({ errorStatus: true, errorMsg: data.error_msg });
+            }
+          }
         } else {
           const api = `http://localhost:8000/add/admin/data`;
           const postAdmin = {
@@ -77,50 +122,18 @@ class AddAdmin extends Component {
             this.setState({ errorStatus: true, errorMsg: data.error_msg });
           }
         }
-      } else {
-        const api = `http://localhost:8000/add/admin/data`;
-        const postAdmin = {
-          email,
-          password,
-          admin_type: adminType,
-          hostel_type,
-          name,
-        };
-        const option = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(postAdmin),
-        };
-        const response = await fetch(api, option);
-        if (response.ok === true) {
-          this.setState({
-            isDisabled: true,
-            email: "",
-            password: "",
-            adminType: "",
-            hostel_type: "both",
-            error_msg: "",
-            isError: false,
-            name: "",
-          });
-
-          toast.success("Admin Created", {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        } else {
-          const data = await response.json();
-          this.setState({ errorStatus: true, errorMsg: data.error_msg });
-        }
       }
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

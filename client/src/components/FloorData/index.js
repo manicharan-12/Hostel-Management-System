@@ -7,6 +7,8 @@ import failure from "../Images/failure-image.png";
 import noData from "../Images/no data.png";
 import axios from "axios";
 import Back from "../Back";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -34,28 +36,45 @@ class Floor extends Component {
   }
 
   getFloorDetails = async () => {
-    const { hostelType } = this.state;
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const api = `http://localhost:8000/floor-data/${hostelType}`;
-    const response = await fetch(api);
-    const data = await response.json();
-    const floorDetails = data.floorDetails;
-    if (response.status !== 200) {
+    try {
+      const { hostelType } = this.state;
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const api = `http://localhost:8000/floor-data/${hostelType}`;
+      const response = await fetch(api);
+      const data = await response.json();
+      const floorDetails = data.floorDetails;
+      if (response.status !== 200) {
+        this.setState({ apiStatus: apiStatusConstants.failure });
+      } else {
+        this.setState({
+          floorDetails: floorDetails,
+          apiStatus: apiStatusConstants.success,
+        });
+      }
+    } catch (error) {
       this.setState({ apiStatus: apiStatusConstants.failure });
-    } else {
-      this.setState({
-        floorDetails: floorDetails,
-        apiStatus: apiStatusConstants.success,
-      });
     }
   };
 
   onClickDeleteFloor = async (id) => {
-    const { hostelType } = this.state;
-    await axios.delete(
-      `http://localhost:8000/floor-data/delete/${hostelType}/${id}`,
-    );
-    this.getFloorDetails();
+    try {
+      const { hostelType } = this.state;
+      await axios.delete(
+        `http://localhost:8000/floor-data/delete/${hostelType}/${id}`,
+      );
+      this.getFloorDetails();
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   renderLoadingView = () => {
@@ -251,6 +270,18 @@ class Floor extends Component {
         <div className="floor-detail-container">
           <Back />
           {this.renderFloorData()}
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover={false}
+            theme="light"
+          />
         </div>
       </>
     );

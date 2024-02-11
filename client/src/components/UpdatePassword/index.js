@@ -14,37 +14,50 @@ class updatePassword extends Component {
   }
 
   updatePassword = async (event) => {
-    event.preventDefault();
-    const { newPassword, confirmPassword, id } = this.state;
-    if (newPassword !== confirmPassword) {
-      this.setState({ error_msg: "Password doesn't Match!" });
-    } else {
-      this.setState({ error_msg: "" });
-      const url = `http://localhost:8000/update-details/${id}`;
-      const putDetails = { name: "", password: newPassword };
-      const option = {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(putDetails),
-      };
-      const response = await fetch(url, option);
-      if (response.status !== 200) {
-        this.setState({ error_msg: "Failed to Update Password" });
+    try {
+      event.preventDefault();
+      const { newPassword, confirmPassword, id } = this.state;
+      if (newPassword !== confirmPassword) {
+        this.setState({ error_msg: "Password doesn't Match!" });
       } else {
-        this.setState({ newPassword: "", confirmPassword: "" });
-        toast.success("Password Updated Successfully", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        this.setState({ error_msg: "" });
+        const url = `http://localhost:8000/update-details/${id}`;
+        const putDetails = { name: "", password: newPassword };
+        const option = {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(putDetails),
+        };
+        const response = await fetch(url, option);
+        if (response.status !== 200) {
+          this.setState({ error_msg: "Failed to Update Password" });
+        } else {
+          this.setState({ newPassword: "", confirmPassword: "" });
+          toast.success("Password Updated Successfully", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       }
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

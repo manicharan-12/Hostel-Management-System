@@ -8,6 +8,8 @@ import noData from "../Images/no data.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Back from "../Back";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -34,25 +36,29 @@ class Room extends Component {
   }
 
   getRoomData = async () => {
-    let { hostelType, roomType, washroomType } = this.state;
-    if (roomType === "Both") {
-      roomType = "";
-    }
-    if (washroomType === "Both") {
-      washroomType = "";
-    }
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const api = `http://localhost:8000/room-data/${hostelType}?room_type=${roomType}&washroom_type=${washroomType}`;
-    const response = await fetch(api);
-    const data = await response.json();
-    const roomData = data.roomData;
-    if (response.status !== 200) {
+    try {
+      let { hostelType, roomType, washroomType } = this.state;
+      if (roomType === "Both") {
+        roomType = "";
+      }
+      if (washroomType === "Both") {
+        washroomType = "";
+      }
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const api = `http://localhost:8000/room-data/${hostelType}?room_type=${roomType}&washroom_type=${washroomType}`;
+      const response = await fetch(api);
+      const data = await response.json();
+      const roomData = data.roomData;
+      if (response.status !== 200) {
+        this.setState({ apiStatus: apiStatusConstants.failure });
+      } else {
+        this.setState({
+          roomData: roomData,
+          apiStatus: apiStatusConstants.success,
+        });
+      }
+    } catch (error) {
       this.setState({ apiStatus: apiStatusConstants.failure });
-    } else {
-      this.setState({
-        roomData: roomData,
-        apiStatus: apiStatusConstants.success,
-      });
     }
   };
 
@@ -61,12 +67,25 @@ class Room extends Component {
   };
 
   onClickDeleteRoom = async (id) => {
-    const { hostelType } = this.state;
-    await axios.delete(
-      `http://localhost:8000/room-data/delete/${hostelType}/${id}`,
-    );
-    this.setState({ roomNo: "" });
-    this.getRoomData();
+    try {
+      const { hostelType } = this.state;
+      await axios.delete(
+        `http://localhost:8000/room-data/delete/${hostelType}/${id}`,
+      );
+      this.setState({ roomNo: "" });
+      this.getRoomData();
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   renderRoomType = (event) => {
@@ -233,6 +252,18 @@ class Room extends Component {
         <Header />
         <Back />
         <div className="room-detail-container">{this.renderFloorData()}</div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </div>
     );
   }

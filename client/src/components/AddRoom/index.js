@@ -41,50 +41,63 @@ class AddRoom extends Component {
   };
 
   addRoom = async (event) => {
-    event.preventDefault();
-    const { floorNo, roomNo, total, roomType, washroomType, hostelType } =
-      this.state;
-    if (floorNo === "" || roomNo === "" || total === "") {
-      this.setState({
-        errorStatus: true,
-        errorMsg: "All Fields Need to be Filled",
-      });
-    } else {
-      this.setState({ errorStatus: false, errorMsg: "" });
-      const api = `http://localhost:8000/room-data/add/room/${hostelType}`;
-      const postRoom = { floorNo, roomNo, total, roomType, washroomType };
-      const option = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postRoom),
-      };
-      const response = await fetch(api, option);
-      if (response.ok === true) {
-        toast.success("Room Created Successfully", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+    try {
+      event.preventDefault();
+      const { floorNo, roomNo, total, roomType, washroomType, hostelType } =
+        this.state;
+      if (floorNo === "" || roomNo === "" || total === "") {
         this.setState({
-          floorNo: "",
-          roomNo: "",
-          total: "",
-          roomType: "AC",
-          washroomType: "Attached",
-          errorMsg: "",
-          errorStatus: false,
+          errorStatus: true,
+          errorMsg: "All Fields Need to be Filled",
         });
       } else {
-        const data = await response.json();
-        this.setState({ errorStatus: true, errorMsg: data.error_msg });
+        this.setState({ errorStatus: false, errorMsg: "" });
+        const api = `http://localhost:8000/room-data/add/room/${hostelType}`;
+        const postRoom = { floorNo, roomNo, total, roomType, washroomType };
+        const option = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postRoom),
+        };
+        const response = await fetch(api, option);
+        if (response.ok === true) {
+          toast.success("Room Created Successfully", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          this.setState({
+            floorNo: "",
+            roomNo: "",
+            total: "",
+            roomType: "AC",
+            washroomType: "Attached",
+            errorMsg: "",
+            errorStatus: false,
+          });
+        } else {
+          const data = await response.json();
+          this.setState({ errorStatus: true, errorMsg: data.error_msg });
+        }
       }
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

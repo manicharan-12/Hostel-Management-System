@@ -30,15 +30,6 @@ body {
   font-family: "lato", sans-serif;
 }
 
-h2 {
-  font-size: 26px;
-  margin: 20px 0;
-  text-align: center;
-  small {
-    font-size: 0.5em;
-  }
-}
-
 .responsive-table {
   li {
     border-radius: 3px;

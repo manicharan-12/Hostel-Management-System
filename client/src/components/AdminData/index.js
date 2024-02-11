@@ -6,6 +6,8 @@ import AdminDetails from "../AdminDetails";
 import axios from "axios";
 import failure from "../Images/failure-image.png";
 import { Puff } from "react-loader-spinner";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -22,23 +24,40 @@ class AdminData extends Component {
   }
 
   getAdminData = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const api = "http://localhost:8000/admin-data";
-    const response = await fetch(api);
-    const data = await response.json();
-    if (response.status !== 200) {
+    try {
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const api = "http://localhost:8000/admin-data";
+      const response = await fetch(api);
+      const data = await response.json();
+      if (response.status !== 200) {
+        this.setState({ apiStatus: apiStatusConstants.failure });
+      } else {
+        this.setState({
+          apiStatus: apiStatusConstants.success,
+          adminList: data.admin_list,
+        });
+      }
+    } catch (error) {
       this.setState({ apiStatus: apiStatusConstants.failure });
-    } else {
-      this.setState({
-        apiStatus: apiStatusConstants.success,
-        adminList: data.admin_list,
-      });
     }
   };
 
   onClickDeleteAdmin = async (id) => {
-    await axios.delete(`http://localhost:8000/delete/admin-data/${id}`);
-    this.getAdminData();
+    try {
+      await axios.delete(`http://localhost:8000/delete/admin-data/${id}`);
+      this.getAdminData();
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   onClickUpdatePassword = (id) => {
@@ -122,6 +141,18 @@ class AdminData extends Component {
         <Header />
         <Back />
         <>{this.renderAdminData()}</>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </div>
     );
   }

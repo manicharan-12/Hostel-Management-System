@@ -20,77 +20,90 @@ class AddStudent extends Component {
   };
 
   addStudentData = async (event) => {
-    event.preventDefault();
-    const {
-      name,
-      hallTicket_number,
-      branch,
-      current_year,
-      gender,
-      mobile_number,
-      hostelType,
-      fees,
-      paid,
-    } = this.state;
-    if (
-      name === "" ||
-      hallTicket_number === "" ||
-      branch === "" ||
-      current_year === "" ||
-      gender === "" ||
-      mobile_number === "" ||
-      fees === "" ||
-      paid === ""
-    ) {
-      this.setState({ error_msg: "All Fields Need to be Filled" });
-    } else {
-      this.setState({ error_msg: "" });
-      const api = `http://localhost:8000/register/student/${hostelType}`;
-      const postStudent = {
+    try {
+      event.preventDefault();
+      const {
         name,
         hallTicket_number,
         branch,
         current_year,
         gender,
         mobile_number,
-        total_amount: fees,
-        amount_paid: paid,
-      };
-      const option = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postStudent),
-      };
-      const response = await fetch(api, option);
-      if (response.status !== 200) {
-        const data = await response.json();
-        this.setState({ error_msg: data.error_msg });
+        hostelType,
+        fees,
+        paid,
+      } = this.state;
+      if (
+        name === "" ||
+        hallTicket_number === "" ||
+        branch === "" ||
+        current_year === "" ||
+        gender === "" ||
+        mobile_number === "" ||
+        fees === "" ||
+        paid === ""
+      ) {
+        this.setState({ error_msg: "All Fields Need to be Filled" });
       } else {
-        this.setState({
-          name: "",
-          hallTicket_number: "",
-          branch: "",
-          current_year: "",
-          room_no: "",
-          gender: "",
-          mobile_number: "",
-          fees: "",
-          paid: "",
-          error_msg: "",
-        });
-        toast.success("Student Added Successfully", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        this.setState({ error_msg: "" });
+        const api = `http://localhost:8000/register/student/${hostelType}`;
+        const postStudent = {
+          name,
+          hallTicket_number,
+          branch,
+          current_year,
+          gender,
+          mobile_number,
+          total_amount: fees,
+          amount_paid: paid,
+        };
+        const option = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postStudent),
+        };
+        const response = await fetch(api, option);
+        if (response.status !== 200) {
+          const data = await response.json();
+          this.setState({ error_msg: data.error_msg });
+        } else {
+          this.setState({
+            name: "",
+            hallTicket_number: "",
+            branch: "",
+            current_year: "",
+            room_no: "",
+            gender: "",
+            mobile_number: "",
+            fees: "",
+            paid: "",
+            error_msg: "",
+          });
+          toast.success("Student Added Successfully", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       }
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 

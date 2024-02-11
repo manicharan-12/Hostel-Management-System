@@ -8,6 +8,8 @@ import noData from "../Images/no data.png";
 import ViewRoomDetails from "../ViewRoomDetails";
 import Select from "react-select";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -30,36 +32,66 @@ class ViewRoom extends Component {
   }
 
   getStudentData = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const id = this.props.history.location.state.id;
-    const api = `http://localhost:8000/room-data/student/${id}`;
-    const response = await fetch(api);
-    const data = await response.json();
-    if (response.status === 200) {
-      this.setState({
-        studentData: data.studentRoomData,
-        roomData: data.getRoomCount,
-        optionsData: data.totalStudent,
-        apiStatus: apiStatusConstants.success,
-      });
-    } else {
+    try {
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const id = this.props.history.location.state.id;
+      const api = `http://localhost:8000/room-data/student/${id}`;
+      const response = await fetch(api);
+      const data = await response.json();
+      if (response.status === 200) {
+        this.setState({
+          studentData: data.studentRoomData,
+          roomData: data.getRoomCount,
+          optionsData: data.totalStudent,
+          apiStatus: apiStatusConstants.success,
+        });
+      } else {
+        this.setState({ apiStatus: apiStatusConstants.failure });
+      }
+    } catch (error) {
       this.setState({ apiStatus: apiStatusConstants.failure });
     }
   };
 
   addStudent = async (event) => {
-    const roomId = this.props.history.location.state.id;
-    const studentId = event.id;
-    await axios.put(
-      `http://localhost:8000/update/room/student/${roomId}/${studentId}`,
-    );
-    this.setState({ isButtonClicked: false });
-    this.getStudentData();
+    try {
+      const roomId = this.props.history.location.state.id;
+      const studentId = event.id;
+      await axios.put(
+        `http://localhost:8000/update/room/student/${roomId}/${studentId}`,
+      );
+      this.setState({ isButtonClicked: false });
+      this.getStudentData();
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   onDeleteRoomStudent = async (id) => {
-    await axios.put(`http://localhost:8000/edit/room/student/${id}`);
-    this.getStudentData();
+    try {
+      await axios.put(`http://localhost:8000/edit/room/student/${id}`);
+      this.getStudentData();
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   renderLoadingView = () => {
@@ -208,6 +240,18 @@ class ViewRoom extends Component {
         <Header />
         <Back />
         <div>{this.renderRoomStudentData()}</div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </div>
     );
   }

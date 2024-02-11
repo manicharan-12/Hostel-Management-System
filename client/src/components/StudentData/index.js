@@ -9,6 +9,8 @@ import StudentDetails from "../StudentDetails";
 import axios from "axios";
 import noData from "../Images/no data.png";
 import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -33,26 +35,43 @@ class StudentData extends Component {
   }
 
   getStudentData = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const { hostelType } = this.state;
-    const api = `http://localhost:8000/student-data/${hostelType}`;
-    const response = await fetch(api);
-    const data = await response.json();
-    if (response.status !== 200) {
+    try {
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const { hostelType } = this.state;
+      const api = `http://localhost:8000/student-data/${hostelType}`;
+      const response = await fetch(api);
+      const data = await response.json();
+      if (response.status !== 200) {
+        this.setState({ apiStatus: apiStatusConstants.failure });
+      } else {
+        this.setState({
+          apiStatus: apiStatusConstants.success,
+          studentData: data.student_data,
+        });
+      }
+    } catch (error) {
       this.setState({ apiStatus: apiStatusConstants.failure });
-    } else {
-      this.setState({
-        apiStatus: apiStatusConstants.success,
-        studentData: data.student_data,
-      });
     }
   };
 
   onClickDeleteStudent = async (id) => {
-    await axios.delete(
-      `http://localhost:8000/student-data/delete/student/${id}`,
-    );
-    this.getStudentData();
+    try {
+      await axios.delete(
+        `http://localhost:8000/student-data/delete/student/${id}`,
+      );
+      this.getStudentData();
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   onClickUpdateStudentData = async (updatedData, id) => {
@@ -93,7 +112,7 @@ class StudentData extends Component {
     const { studentData, name } = this.state;
     const length = studentData.length;
     let newStudentData;
-    const role=Cookies.get("role")
+    const role = Cookies.get("role");
 
     newStudentData = studentData.filter((eachStudent) => {
       if (
@@ -148,11 +167,16 @@ class StudentData extends Component {
                   <p>Year</p>
                 </div>
                 <div className="col col-student">
-                  <p>Mobile</p>
-                  <p>Number</p>
+                  <p>Mobile Number</p>
                 </div>
                 <div className="col col-student">
                   <p>Room No</p>
+                </div>
+                <div>
+                  <p>Total Amount</p>
+                </div>
+                <div>
+                  <p>Balance Amount</p>
                 </div>
                 <div className="col col-student"></div>
                 <div className="col col-student"></div>
@@ -170,8 +194,11 @@ class StudentData extends Component {
         ) : (
           <div className="no-data-container">
             <img src={noData} alt="noData" className="no-data-image" />
-            {role==='super admin'?<h2>No Data Available. Please do Register a Student</h2>:<h2>No Data Available</h2>}
-            
+            {role === "super admin" ? (
+              <h2>No Data Available. Please do Register a Student</h2>
+            ) : (
+              <h2>No Data Available</h2>
+            )}
           </div>
         )}
       </>
@@ -199,6 +226,18 @@ class StudentData extends Component {
         <Header />
         <Back />
         <>{this.renderStudentData()}</>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
       </div>
     );
   }

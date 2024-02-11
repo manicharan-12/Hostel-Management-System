@@ -377,7 +377,7 @@ app.put("/edit/room/student/:studentId", async (request, response) => {
   await db.run(updateRoomDetailQuery);
   const rows = await db.all(`select id from floor`);
   for (const each_floor of rows) {
-    const id = each_floor.id;
+    const id = each_floor.id
     const countQuery = await db.all(
       `select count(room.id) as count, sum(room.total_students) as total, sum(room.available_students) as available, sum(room.present_students)as present from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
     );
@@ -427,7 +427,7 @@ app.post("/register/student/:hostelType", async (request, response) => {
     const balance_amount = total_amount - amount_paid;
     const registerStudentQuery = `insert into student (id,student_name,hall_ticket_number,branch,current_year,gender,mobile_number,hostel_type,total_amount,amount_paid,balance_amount) values('${id}', '${name}', '${hallTicket_number}', '${branch}','${current_year}','${gender}',${mobile_number},'${hostelType}',${total_amount},${amount_paid},${balance_amount})`;
     await db.run(registerStudentQuery);
-    response.send("Success");
+    response.send("Success")
   } else {
     response.send({ error_msg: "Student Already Exists! Please Check" });
   }

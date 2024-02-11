@@ -45,88 +45,118 @@ class EditProfile extends Component {
   }
 
   getAdminData = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const { id } = this.state;
-    const url = `http://localhost:8000/get-admin/${id}`;
-    const response = await fetch(url);
-    if (response.status !== 200) {
+    try {
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const { id } = this.state;
+      const url = `http://localhost:8000/get-admin/${id}`;
+      const response = await fetch(url);
+      if (response.status !== 200) {
+        this.setState({ apiStatus: apiStatusConstants.failure });
+      } else {
+        const data = await response.json();
+        const adminDetails = data.adminDetails;
+        const { email, name } = adminDetails;
+        this.setState({
+          apiStatus: apiStatusConstants.success,
+          email: email,
+          name: name,
+        });
+      }
+    } catch (error) {
       this.setState({ apiStatus: apiStatusConstants.failure });
-    } else {
-      const data = await response.json();
-      const adminDetails = data.adminDetails;
-      const { email, name } = adminDetails;
-      this.setState({
-        apiStatus: apiStatusConstants.success,
-        email: email,
-        name: name,
-      });
     }
   };
 
   updateDetails = async (event) => {
-    event.preventDefault();
-    const { name, newPassword, confirmPassword, id } = this.state;
-    if (newPassword !== confirmPassword) {
-      this.setState({ error_msg: "Password Doesn't match" });
-    } else {
-      const url = `http://localhost:8000/update-details/${id}`;
-      const putDetails = { name, password: newPassword };
-      const option = {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(putDetails),
-      };
-      const response = await fetch(url, option);
-      if (response.status === 200) {
-        this.setState({
-          apiStatus: apiStatusConstants.success,
-          isChangePassword: false,
-          isDisabled: true,
-          currentPassword: "",
-          checkPasswordStatus: apiStatusConstants.initial,
-          checkPasswordClicked: false,
-          isPasswordCorrect: false,
-          newPassword: "",
-          confirmPassword: "",
-          error_msg: "",
-        });
-        toast.success("Profile Updated Successfully", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+    try {
+      event.preventDefault();
+      const { name, newPassword, confirmPassword, id } = this.state;
+      if (newPassword !== confirmPassword) {
+        this.setState({ error_msg: "Password Doesn't match" });
+      } else {
+        const url = `http://localhost:8000/update-details/${id}`;
+        const putDetails = { name, password: newPassword };
+        const option = {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(putDetails),
+        };
+        const response = await fetch(url, option);
+        if (response.status === 200) {
+          this.setState({
+            apiStatus: apiStatusConstants.success,
+            isChangePassword: false,
+            isDisabled: true,
+            currentPassword: "",
+            checkPasswordStatus: apiStatusConstants.initial,
+            checkPasswordClicked: false,
+            isPasswordCorrect: false,
+            newPassword: "",
+            confirmPassword: "",
+            error_msg: "",
+          });
+          toast.success("Profile Updated Successfully", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       }
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
   checkPassword = async () => {
-    const { currentPassword, id } = this.state;
-    this.setState({ checkPasswordStatus: apiStatusConstants.inProgress });
-    await axios
-      .post(`http://localhost:8000/check-password/${id}`, {
-        password: currentPassword,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          this.setState({
-            isPasswordCorrect: true,
-            checkPasswordStatus: apiStatusConstants.success,
-            isDisabled: false,
-          });
-        } else {
+    try {
+      const { currentPassword, id } = this.state;
+      this.setState({ checkPasswordStatus: apiStatusConstants.inProgress });
+      await axios
+        .post(`http://localhost:8000/check-password/${id}`, {
+          password: currentPassword,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            this.setState({
+              isPasswordCorrect: true,
+              checkPasswordStatus: apiStatusConstants.success,
+              isDisabled: false,
+            });
+          } else {
+            this.setState({ checkPasswordStatus: apiStatusConstants.failure });
+          }
+        })
+        .catch((error) => {
           this.setState({ checkPasswordStatus: apiStatusConstants.failure });
-        }
-      })
-      .catch((error) => {
-        this.setState({ checkPasswordStatus: apiStatusConstants.failure });
+        });
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+    }
   };
 
   renderName = (event) => {
@@ -199,6 +229,7 @@ class EditProfile extends Component {
       name,
       newPassword,
       confirmPassword,
+      error_msg,
     } = this.state;
     const bgColor =
       isDisabled === true
@@ -339,6 +370,7 @@ class EditProfile extends Component {
             ) : (
               ""
             )}
+            <p style={{ color: "red", marginTop: "8px" }}>{error_msg}</p>
           </form>
         </div>
       </div>
