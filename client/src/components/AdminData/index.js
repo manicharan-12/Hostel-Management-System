@@ -43,9 +43,11 @@ class AdminData extends Component {
   };
 
   onClickDeleteAdmin = async (id) => {
+    const { adminList } = this.state;
     try {
       await axios.delete(`http://localhost:8000/delete/admin-data/${id}`);
-      this.getAdminData();
+      const updatedList = adminList.filter((admin) => admin.id !== id);
+      this.setState({ adminList: updatedList });
     } catch (error) {
       toast.error("Something Went Wrong! Please Try again later", {
         position: "bottom-center",

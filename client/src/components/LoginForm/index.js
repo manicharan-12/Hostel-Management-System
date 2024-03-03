@@ -47,6 +47,12 @@ class Login extends Component {
     }
   };
 
+  onSubmitSuccessStudent = async (jwtToken, email) => {
+    const { history } = this.props;
+    Cookies.set("jwt_token", jwtToken, { expires: 1, path: "/" });
+    history.replace("/home");
+  };
+
   submitField = async (event) => {
     try {
       event.preventDefault();
@@ -69,8 +75,24 @@ class Login extends Component {
           this.setState({ errorMsg: data.error_msg });
         }
       } else if (role === "student") {
+        const url = "http://localhost:8000/login/student/";
+        const postObject = { email: email, password: password };
+        const option = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postObject),
+        };
+        const response = await fetch(url, option);
+        const data = await response.json();
+        if (response.ok === true) {
+          this.onSubmitSuccessStudent(data.jwt_token, email);
+        } else {
+          this.setState({ errorMsg: data.error_msg });
+        }
       } else {
-        this.set({
+        this.setState({
           errorMsg: "Invalid Student Role. Please check to continue",
         });
       }

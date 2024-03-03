@@ -377,7 +377,7 @@ app.put("/edit/room/student/:studentId", async (request, response) => {
   await db.run(updateRoomDetailQuery);
   const rows = await db.all(`select id from floor`);
   for (const each_floor of rows) {
-    const id = each_floor.id
+    const id = each_floor.id;
     const countQuery = await db.all(
       `select count(room.id) as count, sum(room.total_students) as total, sum(room.available_students) as available, sum(room.present_students)as present from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
     );
@@ -425,9 +425,10 @@ app.post("/register/student/:hostelType", async (request, response) => {
   if (checkStudent === undefined) {
     const id = uuidv4();
     const balance_amount = total_amount - amount_paid;
-    const registerStudentQuery = `insert into student (id,student_name,hall_ticket_number,branch,current_year,gender,mobile_number,hostel_type,total_amount,amount_paid,balance_amount) values('${id}', '${name}', '${hallTicket_number}', '${branch}','${current_year}','${gender}',${mobile_number},'${hostelType}',${total_amount},${amount_paid},${balance_amount})`;
+    const hashedPassword = bcrypt.hash("12345678", 10);
+    const registerStudentQuery = `insert into student (id,student_name,hall_ticket_number,branch,current_year,gender,mobile_number,hostel_type,total_amount,amount_paid,balance_amount,password) values('${id}', '${name}', '${hallTicket_number}', '${branch}','${current_year}','${gender}',${mobile_number},'${hostelType}',${total_amount},${amount_paid},${balance_amount},'${hashedPassword}')`;
     await db.run(registerStudentQuery);
-    response.send("Success")
+    response.send("Success");
   } else {
     response.send({ error_msg: "Student Already Exists! Please Check" });
   }
@@ -460,3 +461,32 @@ app.delete(
     }
   },
 );
+
+app.post("/login/student/", async (request, response) => {
+  try {
+    const { email, password } = request.body;
+    const checkUser = `select * from student where email='${email}';`;
+    const dbUserExist = await db.get(checkUser);
+    if (dbUserExist !== undefined) {
+      const checkPassword = await bcrypt.compare(
+        password,
+        dbUserExist.password,
+      );
+      if (checkPassword === true) {
+        const payload = { email: email };
+        const jwt_token = jwt.sign(payload, "21eg112b31");
+        response.send({ jwt_token });
+      } else {
+        response.status(401);
+        response.send({ error_msg: "Wrong Password" });
+      }
+    } else {
+      response.status(401);
+      response.send({
+        error_msg: "Invalid Email Id. Please Check to Continue",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});

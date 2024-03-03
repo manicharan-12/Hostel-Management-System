@@ -7,3 +7,72 @@
   cursor: pointer;
   outline: none;
 }
+
+.room-data-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  font-family: "Open Sans";
+  margin-left: 12px;
+  margin-right: 12px;
+  min-height: 1px;
+  padding: 1rem;
+  max-width: 30%;
+  width: 100%;
+  align-self: center;
+  box-shadow:
+    rgba(0, 0, 0, 0.16) 0px 3px 6px,
+    rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.room-data {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.room-content {
+  width: 100%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .room-data-box {
+    max-width: 100%;
+
+    align-self: center;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .room-data-box {
+    max-width: 45%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .room-data-box {
+    max-width: 45%;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .room-data-box {
+    max-width: 30%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .room-data-box {
+    max-width: 30%;
+  }
+}

@@ -6,3 +6,17 @@
   flex-basis: 16.6666666667%;
   border-right: none !important;
 }
+
+.table-header {
+  background-color: #000;
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+@media all and (max-width: 767px) {
+  .table-header-floor {
+    display: none;
+  }
+}

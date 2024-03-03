@@ -57,12 +57,14 @@ class Floor extends Component {
   };
 
   onClickDeleteFloor = async (id) => {
+    const { floorDetails } = this.state;
     try {
       const { hostelType } = this.state;
       await axios.delete(
         `http://localhost:8000/floor-data/delete/${hostelType}/${id}`,
       );
-      this.getFloorDetails();
+      const updatedList = floorDetails.filter((floor) => floor.id !== id);
+      this.setState({ floorDetails: updatedList });
     } catch (error) {
       toast.error("Something Went Wrong! Please Try again later", {
         position: "bottom-center",
@@ -225,41 +227,54 @@ class Floor extends Component {
   };
 
   addFloor = async (event) => {
-    event.preventDefault();
-    const { hostelType, floorNo } = this.state;
-    if (!floorNo) {
-      this.setState({
-        errorStatus: true,
-        errorMsg: "Floor number cannot be empty",
+    try {
+      event.preventDefault();
+      const { hostelType, floorNo } = this.state;
+      if (!floorNo) {
+        this.setState({
+          errorStatus: true,
+          errorMsg: "Floor number cannot be empty",
+        });
+        return;
+      }
+      this.setState({ apiStatus: apiStatusConstants.inProgress });
+      const api = `http://localhost:8000/floor-data/add/floor/${hostelType}`;
+      const postFloor = { floorNo };
+      const option = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postFloor),
+      };
+      const response = await fetch(api, option);
+      if (response.ok !== true) {
+        const data = await response.json();
+        this.setState({
+          errorStatus: true,
+          errorMsg: data.error_msg,
+          apiStatus: apiStatusConstants.success,
+        });
+      } else {
+        await this.setState({
+          apiStatus: apiStatusConstants.success,
+          errorStatus: false,
+          errorMsg: "",
+          show: false,
+        });
+        this.getFloorDetails();
+      }
+    } catch (error) {
+      toast.error("Something Went Wrong! Please Try again later", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
-      return;
-    }
-    this.setState({ apiStatus: apiStatusConstants.inProgress });
-    const api = `http://localhost:8000/floor-data/add/floor/${hostelType}`;
-    const postFloor = { floorNo };
-    const option = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postFloor),
-    };
-    const response = await fetch(api, option);
-    if (response.ok !== true) {
-      const data = await response.json();
-      this.setState({
-        errorStatus: true,
-        errorMsg: data.error_msg,
-        apiStatus: apiStatusConstants.success,
-      });
-    } else {
-      await this.setState({
-        apiStatus: apiStatusConstants.success,
-        errorStatus: false,
-        errorMsg: "",
-        show: false,
-      });
-      this.getFloorDetails();
     }
   };
 

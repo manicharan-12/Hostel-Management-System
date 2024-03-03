@@ -67,13 +67,15 @@ class Room extends Component {
   };
 
   onClickDeleteRoom = async (id) => {
+    const { roomData } = this.state;
     try {
       const { hostelType } = this.state;
       await axios.delete(
         `http://localhost:8000/room-data/delete/${hostelType}/${id}`,
       );
       this.setState({ roomNo: "" });
-      this.getRoomData();
+      const updatedList = roomData.filter((room) => room.id !== id);
+      this.setState({ roomData: updatedList });
     } catch (error) {
       toast.error("Something Went Wrong! Please Try again later", {
         position: "bottom-center",
@@ -162,28 +164,7 @@ class Room extends Component {
               </select>
             </div>
             <div className="room-table">
-              <ul className="responsive-table">
-                <li className="table-header">
-                  <div className="col col-1">Floor No</div>
-                  <div className="col col-2">Room No</div>
-                  <div className="col col-3">
-                    <p>Present</p> <p>Students</p>
-                  </div>
-                  <div className="col col-4">
-                    <p>Available</p> <p>Students</p>
-                  </div>
-                  <div className="col col-5">
-                    <p>Total</p> <p>Students</p>
-                  </div>
-                  <div className="col col-6">
-                    <p>Room</p> <p>Type</p>
-                  </div>
-                  <div className="col col-7">
-                    <p>Washroom</p> <p>Type</p>
-                  </div>
-                  <div className="col col-8"></div>
-                  <div className="col col-9"></div>
-                </li>
+              <div className="room-boxes-container">
                 {newRoomData.map((eachRoom) => (
                   <RoomData
                     key={eachRoom.id}
@@ -191,7 +172,7 @@ class Room extends Component {
                     onClickDeleteRoom={this.onClickDeleteRoom}
                   />
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         ) : (

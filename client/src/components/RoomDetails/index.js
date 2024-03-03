@@ -26,48 +26,81 @@ const RoomData = (props) => {
   }
 
   return (
-    <li className="table-row">
-      <div className="col col-1" data-label="Floor No">
-        {floor_no}
+    <div className="room-data-box">
+      <div className="room-data">
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Floor No:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {floor_no}
+        </div>
       </div>
-      <div className="col col-2" data-label="Room No">
-        {room_no}
+      <div className="room-data">
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Room No:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {room_no}
+        </div>
       </div>
       <div
-        className="col col-3"
-        data-label="Present Students"
+        className="room-data"
         style={{ color: present_color, fontWeight: "bolder" }}
       >
-        {present_students}
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Present Students:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {present_students}
+        </div>
       </div>
       <div
-        className="col col-4"
-        data-label="Available Students"
+        className="room-data"
         style={{ color: available_color, fontWeight: "bolder" }}
       >
-        {available_students}
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Available Students:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {available_students}
+        </div>
       </div>
-      <div className="col col-5" data-label="Total Students">
-        {total_students}
+      <div className="room-data" style={{ fontWeight: "bolder" }}>
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Total Students:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {total_students}
+        </div>
       </div>
-      <div className="col col-6" data-label="Room Type">
-        {room_type}
+      <div className="room-data">
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Room Type:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {room_type}
+        </div>
       </div>
-      <div className="col col-7" data-label="Washroom Type">
-        {washroom_type}
+      <div className="room-data">
+        <div className="room-content" style={{ textAlign: "right" }}>
+          Washroom Type:
+        </div>
+        <div className="room-content" style={{ paddingLeft: "10px" }}>
+          {washroom_type}
+        </div>
       </div>
-      <div className="col col-8" data-label="">
+      <div style={{ padding: "10px 0" }}>
         <button className="room-view-button" onClick={() => getViewData(id)}>
           View Details
         </button>
       </div>
-      <div className="col col-9">
+      <div className="">
         <MdDelete
           className="delete-icon"
           onClick={() => onClickDeleteRoom(id)}
         />
       </div>
-    </li>
+    </div>
   );
 };
 

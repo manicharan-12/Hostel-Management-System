@@ -173,15 +173,15 @@ class ViewRoom extends Component {
               ""
             )}
             {isButtonClicked === true ? (
-              <>
+              <div className="select-container">
                 <Select
                   isSearchable={true}
                   options={options}
-                  className="basic-single"
+                  className="basic-single select-bar"
                   classNamePrefix="select"
                   onChange={this.addStudent}
                 />
-              </>
+              </div>
             ) : (
               ""
             )}
@@ -189,21 +189,23 @@ class ViewRoom extends Component {
         ) : (
           <div>
             {isButtonClicked === true ? (
-              <>
+              <div className="select-container">
                 <Select
                   isSearchable={true}
                   options={options}
-                  className="basic-single"
+                  className="basic-single select-bar"
                   classNamePrefix="select"
                   onChange={this.addStudent}
                 />
-              </>
+              </div>
             ) : (
               <>
                 <div className="no-data-container">
                   <img src={noData} alt="noData" className="no-data-image" />
                 </div>
-                <h2>No Students are Assigned to this Room</h2>
+                <h2 style={{ textAlign: "center", marginBottom: "12px" }}>
+                  No Students are Assigned to this Room
+                </h2>
                 <div className="add-student-button-container">
                   <button
                     className="add-student-button"
