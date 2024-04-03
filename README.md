@@ -46,15 +46,15 @@ The server will start on [http://localhost:8000](http://localhost:3000)
 
 This Application Consists of both Super Admin and Admin
 
-## Super Admin
+### Super Admin
 
-Email: `admin@gmail.com`
+Email: `admin@anurag.edu.in`
 
 Password: `admin`
 
-## Admin
+### Admin
 
-Email: `admin1@gmail.com`
+Email: `admin1@anurag.edu.in`
 
 Password: `admin1`
 
