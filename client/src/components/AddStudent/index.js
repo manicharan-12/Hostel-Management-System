@@ -15,8 +15,6 @@ class AddStudent extends Component {
     mobile_number: "",
     error_msg: "",
     hostelType: this.props.match.params.hostelType,
-    fees: "",
-    paid: "",
   };
 
   addStudentData = async (event) => {
@@ -30,8 +28,6 @@ class AddStudent extends Component {
         gender,
         mobile_number,
         hostelType,
-        fees,
-        paid,
       } = this.state;
       if (
         name === "" ||
@@ -39,9 +35,7 @@ class AddStudent extends Component {
         branch === "" ||
         current_year === "" ||
         gender === "" ||
-        mobile_number === "" ||
-        fees === "" ||
-        paid === ""
+        mobile_number === ""
       ) {
         this.setState({ error_msg: "All Fields Need to be Filled" });
       } else {
@@ -54,8 +48,6 @@ class AddStudent extends Component {
           current_year,
           gender,
           mobile_number,
-          total_amount: fees,
-          amount_paid: paid,
         };
         const option = {
           method: "POST",
@@ -77,8 +69,6 @@ class AddStudent extends Component {
             room_no: "",
             gender: "",
             mobile_number: "",
-            fees: "",
-            paid: "",
             error_msg: "",
           });
           toast.success("Student Added Successfully", {
@@ -129,14 +119,6 @@ class AddStudent extends Component {
 
   renderMobileNumber = (event) => {
     this.setState({ mobile_number: event.target.value });
-  };
-
-  renderFees = (event) => {
-    this.setState({ fees: event.target.value });
-  };
-
-  renderPaid = (event) => {
-    this.setState({ paid: event.target.value });
   };
 
   renderForm = () => {
@@ -231,24 +213,6 @@ class AddStudent extends Component {
                 className="add-input-student"
                 onChange={this.renderMobileNumber}
                 value={mobile_number}
-              />
-            </div>
-            <div className="add-student-input-container">
-              <label>Fees:</label>
-              <input
-                type="text"
-                className="add-input-student"
-                onChange={this.renderFees}
-                value={fees}
-              />
-            </div>
-            <div className="add-student-input-container">
-              <label>Amount Paid:</label>
-              <input
-                type="text"
-                className="add-input-student"
-                onChange={this.renderPaid}
-                value={paid}
               />
             </div>
             <div>

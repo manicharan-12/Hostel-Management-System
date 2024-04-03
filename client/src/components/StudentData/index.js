@@ -172,12 +172,6 @@ class StudentData extends Component {
                 <div className="col col-student">
                   <p>Room No</p>
                 </div>
-                <div>
-                  <p>Total Amount</p>
-                </div>
-                <div>
-                  <p>Balance Amount</p>
-                </div>
                 <div className="col col-student"></div>
                 <div className="col col-student"></div>
               </li>

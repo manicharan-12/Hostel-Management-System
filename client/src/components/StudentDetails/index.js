@@ -87,7 +87,7 @@ class StudentDetails extends Component {
       room_no,
     } = this.state;
     const { onClickDeleteStudent, details } = this.props;
-    const { id, total_amount, balance_amount } = details;
+    const { id } = details;
     console.log(details);
 
     return (
@@ -165,12 +165,6 @@ class StudentDetails extends Component {
           </div>
           <div className="col col-student" data-label="Room No">
             <p>{room_no}</p>
-          </div>
-          <div className="col col-student" data-label="Total Amount">
-            <p>{total_amount}</p>
-          </div>
-          <div className="col col-student" data-label="Balance Amount">
-            <p>{balance_amount}</p>
           </div>
           <div className="col col-student">
             {isEditClicked === true ? (

@@ -417,16 +417,12 @@ app.post("/register/student/:hostelType", async (request, response) => {
     current_year,
     gender,
     mobile_number,
-    total_amount,
-    amount_paid,
   } = request.body;
   const checkStudentQuery = `select * from student where hall_ticket_number='${hallTicket_number}'`;
   const checkStudent = await db.get(checkStudentQuery);
   if (checkStudent === undefined) {
     const id = uuidv4();
-    const balance_amount = total_amount - amount_paid;
-    const hashedPassword = bcrypt.hash("12345678", 10);
-    const registerStudentQuery = `insert into student (id,student_name,hall_ticket_number,branch,current_year,gender,mobile_number,hostel_type,total_amount,amount_paid,balance_amount,password) values('${id}', '${name}', '${hallTicket_number}', '${branch}','${current_year}','${gender}',${mobile_number},'${hostelType}',${total_amount},${amount_paid},${balance_amount},'${hashedPassword}')`;
+    const registerStudentQuery = `insert into student (id,student_name,hall_ticket_number,branch,current_year,gender,mobile_number,hostel_type) values('${id}', '${name}', '${hallTicket_number}', '${branch}','${current_year}','${gender}',${mobile_number},'${hostelType}')`;
     await db.run(registerStudentQuery);
     response.send("Success");
   } else {
@@ -438,7 +434,7 @@ app.delete(
   "/student-data/delete/student/:studentId",
   async (request, response) => {
     const { studentId } = request.params;
-    const roomIdQuery = `select room_id from student where id='${studentId}'`;
+    const roomIdQuery = `select room_id, floor_id from student where id='${studentId}'`;
     const roomId = await db.get(roomIdQuery);
     if (roomId.room_id === null) {
       const deleteQuery = `delete from student where id='${studentId}'`;
@@ -458,35 +454,29 @@ app.delete(
       const available = capacity - totalPresent;
       const updateRoomDetailQuery = `update room set available_students=${available}, present_students=${totalPresent} where id='${room_id}';`;
       await db.run(updateRoomDetailQuery);
+      const rows = await db.all(`select id from floor`);
+      for (const each_floor of rows) {
+        const id = each_floor.id;
+        const countQuery = await db.all(
+          `select count(room.id) as count, sum(room.total_students) as total, sum(room.available_students) as available, sum(room.present_students)as present from room inner join floor on room.floor_id=floor.id where room.floor_id='${id}'`,
+        );
+        const countRoom = countQuery[0].count;
+        let countTotal = countQuery[0].total;
+        let available = countQuery[0].available;
+        let present = countQuery[0].present;
+        if (countTotal === null) {
+          countTotal = 0;
+        }
+        if (available === null) {
+          available = 0;
+        }
+        if (present === null) {
+          present = 0;
+        }
+        await db.run(
+          `update floor set no_of_rooms=${countRoom}, total_students=${countTotal}, available_students=${available},present_students=${present} where id='${id}' `,
+        );
+      }
     }
   },
 );
-
-app.post("/login/student/", async (request, response) => {
-  try {
-    const { email, password } = request.body;
-    const checkUser = `select * from student where email='${email}';`;
-    const dbUserExist = await db.get(checkUser);
-    if (dbUserExist !== undefined) {
-      const checkPassword = await bcrypt.compare(
-        password,
-        dbUserExist.password,
-      );
-      if (checkPassword === true) {
-        const payload = { email: email };
-        const jwt_token = jwt.sign(payload, "21eg112b31");
-        response.send({ jwt_token });
-      } else {
-        response.status(401);
-        response.send({ error_msg: "Wrong Password" });
-      }
-    } else {
-      response.status(401);
-      response.send({
-        error_msg: "Invalid Email Id. Please Check to Continue",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
